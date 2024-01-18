@@ -9,3 +9,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 }
+//здесь ты держишь ссылку на активити вне активити.потому хип захломляется
+/*
+object X{
+        var a : Activity? = null
+}*/
