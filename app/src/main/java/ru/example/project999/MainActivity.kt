@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //     Log.d("NN97","{${Thread.currentThread()}}")
+
         val textView = findViewById<TextView>(R.id.textView)
         var count = 0
 
