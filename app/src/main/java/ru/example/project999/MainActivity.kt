@@ -1,5 +1,6 @@
 package ru.example.project999
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity {
 
     //смотри, тут та х -ня с аттачом, активити с апликашнои не аттачилось ещё тут ,потому будет ошибка
-    //  private val appName = application.getString(R.string.app_name)
+      //private val appName = application.getString(R.string.app_name)
 
     constructor() {
         Log.d("nn97", "MainAct constr")
@@ -16,9 +17,45 @@ class MainActivity : AppCompatActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d("nn97", "MainAct oncreate")
-
+        Log.d("nn97", "MainAct onCreate $savedInstanceState")
     }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        Log.d("nn97", "configChanged $newConfig")
+        if (newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE){
+            Log.d("nn97","landscape")
+        }
+    }
+    override fun onRestart() {
+        super.onRestart()
+        Log.d("nn97", "MainAct onRestart")
+    }
+    override fun onStart() {
+        super.onStart()
+        Log.d("nn97", "MainAct onStart")
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("nn97", "MainAct onResume")
+    }
+    override fun onPause() {
+        super.onPause()
+        Log.d("nn97", "MainAct onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("nn97", "MainAct onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("nn97", "MainAct onDestroy")
+    }
+
 }
 
 //Log.d("nn97", "${Thread.currentThread()}")
