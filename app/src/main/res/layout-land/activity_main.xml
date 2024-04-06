@@ -7,14 +7,18 @@
     tools:context=".MainActivity">
 
     <TextView
+
         android:textSize="40sp"
-        android:id="@+id/textView"
+        android:id="@+id/counterTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:freezesText="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <!--
+     вместо ondsaveinstancestate в коде -  в разметке пишем  android:freezesText="true"
+     -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
