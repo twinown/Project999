@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity {
         //хотя, если капнуть. он ичпользует онсэйвинстатнстейт всё равно..каждая вью использует
         //тему ниже используй , если у тебя просто текст, цифра
         if (savedInstanceState == null) {
+      //первый запуск
             textView.text = "0"
         }
         textView.setOnClickListener {
@@ -73,6 +74,18 @@ class MainActivity : AppCompatActivity {
             }*/
     }
 
+    //проверка вместимости Bundle`а
+    //вызываем  TransactionTooLargeException
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val list = ArrayList<String>()
+        for (i in 0..6_000) {
+            list.add(System.currentTimeMillis().toString())
+        }
+        val size = list.toString().toByteArray().size
+        Log.d("nn97", "list: $size")
+        outState.putStringArrayList("l", list)
+    }
     //вызывается перед смертью процесса,либо активити, даже при сворачивании активити
     //после OnStop()
     /* override fun onSaveInstanceState(outState: Bundle) {

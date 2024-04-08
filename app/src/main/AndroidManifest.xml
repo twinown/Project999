@@ -16,6 +16,7 @@
 
         <!--
         android:resizeableActivity="false"  это в активити
+        при этой фигне активити умирать и пересоздаваться не будет
         android:configChanges="locale|orientation|screenSize|uiMode"
         -->
         <activity
