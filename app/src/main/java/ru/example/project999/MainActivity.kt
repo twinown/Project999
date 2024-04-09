@@ -16,7 +16,9 @@ class MainActivity : AppCompatActivity {
 
     //для примера про largeheap
     // private val  list = mutableListOf<Any>()
-    private var count = 0
+
+    //переменная для onsaveinstancestate
+    //private var count = 0
 
     constructor() {
         Log.d("nn97", "MainAct constr")
@@ -150,7 +152,7 @@ class MainActivity : AppCompatActivity {
       //закидываем месседж наверх очереди
       //вызывая мэйнлуп - то есть ставим на очередь мэйн треда
       //потому что если ты иниц вьюху свою в мэйн треде
-      //то можешь только в нём с ней и работать
+      //то можешь только в нём с ней и работать иначе будет wrongthreadexception
       textView.setOnClickListener {
           Thread {
               Handler(Looper.getMainLooper()).post {
