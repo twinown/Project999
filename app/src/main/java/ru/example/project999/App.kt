@@ -3,22 +3,18 @@ package ru.example.project999
 import android.app.Application
 import android.util.Log
 
-class App : Application {
+class App : Application() {
 
+      lateinit var mainRepresentative: MainRepresentative
     //count живёт теперь в апплиашне,потому ему пофиг на повороты
     //каунт будет занулляться,если умрёт аппликашн!а аппл умирает при смерти процееса
     //var count = 0
     private val handleDeath = HandleDeath.Base()
     private var localCache = ""
 
-    constructor() {
-        Log.d("nn97", "app constr")
-    }
-
-    override fun onCreate() {
+       override fun onCreate() {
         super.onCreate()
-        val processId = android.os.Process.myPid()
-        Log.d("nn97", "app oncreate process id $processId")
+        mainRepresentative = MainRepresentative.Base()
     }
 
     //топ хэндлер смерти процесса
