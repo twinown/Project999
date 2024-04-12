@@ -1,7 +1,6 @@
 package ru.example.project999
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) //инициализация дерева вьюх
 
+        //активити получил ссылку на репрезентатив
          representative = (application as App).mainRepresentative
          textView = findViewById(R.id.counterTextView)
 
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //репрезентатив получил сслыку на активити
     override fun onResume() {
         super.onResume()
         representative.startGettingUpdates(activityCallback)
@@ -55,11 +56,13 @@ class MainActivity : AppCompatActivity() {
 
 
 }
-interface ActivityCallback{
 
-    fun isEmpty():Boolean
+//ты не передаёшь прям активити, по факту это просто типо интерфейс,живущий с ним что ли
+interface ActivityCallback {
+
+    fun isEmpty(): Boolean
     fun updateUi()
-    class Empty:ActivityCallback{
+    class Empty : ActivityCallback {
         override fun isEmpty(): Boolean = true
 
         override fun updateUi() = Unit
