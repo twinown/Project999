@@ -5,6 +5,7 @@ interface MainRepresentative {
     fun startGettingUpdates(callback: ActivityCallback)
     fun stopGettingUpdates()
     fun startAsync()
+    fun saveState()
 
     class Base : MainRepresentative {
         private var activityCallback: ActivityCallback = ActivityCallback.Empty()
@@ -17,14 +18,17 @@ interface MainRepresentative {
             } else {
                 activityCallback.updateUi()
             }
-
         }
 
         override fun startGettingUpdates(callback: ActivityCallback) {
             if (needToPing){
+                activityCallback = callback // зачем это ?
                 callback.updateUi()
                 needToPing = false
             } else{
+                //вот тут и происходит свзяь репрезентатива с активити
+                //в твой репрезентатив(ака аппликашн) приъодит коллбэк(ака активти)
+                //и ты гришь ,что твой локальный коллбэк становится пришедшим коллбэком
                 activityCallback = callback
             }
         }
@@ -35,6 +39,10 @@ interface MainRepresentative {
 
         override fun startAsync() {
             thread.start()
+        }
+
+        override fun saveState() {
+            TODO("Not yet implemented")
         }
 
     }
