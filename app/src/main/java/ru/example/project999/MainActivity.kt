@@ -1,6 +1,7 @@
 package ru.example.project999
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -24,7 +25,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) //инициализация дерева вьюх
 
-        //активити получил ссылку на репрезентатив
+        //двойная связь
+        //тут актвити связывется с репрезентативом
+        //здесь активити получает доступ к репрезентативу
+        //я активити даю доступ к репрезентативу
+        //репрезентатив дали активити
          representative = (application as App).mainRepresentative
          textView = findViewById(R.id.counterTextView)
 
@@ -43,8 +48,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //репрезентатив получил сслыку на активити
     override fun onResume() {
+        //активити дали репрезентативу
+        //тут репрезентатив с активити
+        //здесь репрезентатив получает доступ к активити
+        //здесть репрезентатив ака аппликашн держит ссылку на активити
+        //я репрезентативу даю доступ к активити
         super.onResume()
         representative.startGettingUpdates(activityCallback)
     }
@@ -54,11 +63,20 @@ class MainActivity : AppCompatActivity() {
         representative.stopGettingUpdates()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        representative.saveState()
+    }
 
 }
 
 //ты не передаёшь прям активити, по факту это просто типо интерфейс,живущий с ним что ли
 interface ActivityCallback {
+
+//это неявное активити..почему ? да потому что объект класса эмпти через интерфейс ты создаёшь
+//в классе активити..соответсвенно, он живёт столько же,скока активити
+//потому и может ТИПО быть активити
+interface  ActivityCallback{
 
     fun isEmpty(): Boolean
     fun updateUi()
