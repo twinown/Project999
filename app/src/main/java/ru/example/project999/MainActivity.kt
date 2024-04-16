@@ -10,9 +10,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var representative: MainRepresentative
     private lateinit var textView: TextView
 
+
+    //внутренний объект активити - он типо и есть активити для нас
+    //анонимный объект держит ссылку на мэйн активити
     private val  activityCallback = object :ActivityCallback{
         override fun isEmpty(): Boolean  = false
-
         override fun updateUi() {
             runOnUiThread {
                 textView.setText(R.string.hello_world)
@@ -25,11 +27,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) //инициализация дерева вьюх
 
-        //двойная связь
-        //тут актвити связывется с репрезентативом
-        //здесь активити получает доступ к репрезентативу
-        //я активити даю доступ к репрезентативу
-        //репрезентатив дали активити
+        //двойная связь/связанность
+        //связь активити с репрезентативом (из активити доступ к репрезентативу)
+        //репрезентатив приходит в активити(активити получает ссылку на репрезентатив)
          representative = (application as App).mainRepresentative
          textView = findViewById(R.id.counterTextView)
 
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
       //первый запуск
             textView.text = "0"
         }
+        // в ебучем котле здесь и инициализаци и заюивание листенера происходит,потому и непонятно
         textView.setOnClickListener {
           representative.startAsync()
         }
@@ -49,11 +50,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        //активити дали репрезентативу
-        //тут репрезентатив с активити
-        //здесь репрезентатив получает доступ к активити
-        //здесть репрезентатив ака аппликашн держит ссылку на активити
-        //я репрезентативу даю доступ к активити
+        //связь репрезентатива с активити
+        //активити приходит в репрезентатив(репрезентатив получает ссылку на активити)
         super.onResume()
         representative.startGettingUpdates(activityCallback)
     }
@@ -78,6 +76,7 @@ interface  ActivityCallback{
     fun isEmpty():Boolean
     fun updateUi()
     class Empty:ActivityCallback{
+        //умерла ли активити уже?
         override fun isEmpty(): Boolean = true
 
         override fun updateUi() = Unit
