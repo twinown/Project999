@@ -1,5 +1,7 @@
 package ru.example.project999
 
+
+//этот интерфейс нужен для того, что понять произошла смерть процесса или просто поворот экрана
 interface HandleDeath {
     fun firstOpening()
     fun wasDeathHappened(): Boolean

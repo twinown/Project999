@@ -4,8 +4,9 @@
     android:id="@+id/counterTextView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:freezesText="true"
+    android:gravity="center"
+
     android:textAppearance="@style/TextAppearance.AppCompat.Title" /><!--
   вместо ondsaveinstancestate в коде -  в разметке пишем android:freezesText="true"
   -->
