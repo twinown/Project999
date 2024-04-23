@@ -8,7 +8,7 @@ class App : Application() {
 //логика существования твоего аппликашна - хранилище вью-модели, репрезентатива, презентера
     //аппликашн хранит ссылку на репрезентатив
       lateinit var mainRepresentative: MainRepresentative
-    //count живёт теперь в апплиашне,потому ему пофиг на повороты
+    //count живёт теперь в аппликашне,потому ему пофиг на повороты
     //каунт будет занулляться,если умрёт аппликашн!а аппл умирает при смерти процееса
     //var count = 0
     private val handleDeath = HandleDeath.Base()
@@ -16,7 +16,7 @@ class App : Application() {
 
        override fun onCreate() {
         super.onCreate()
-        mainRepresentative = MainRepresentative.Base()
+           mainRepresentative = MainRepresentative.Base(UiObservable.Single())
     }
 
     //топ хэндлер смерти процесса
