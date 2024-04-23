@@ -22,11 +22,12 @@ class MainActivity : AppCompatActivity() {
 
         val textView = findViewById<TextView>(R.id.counterTextView)
         //handle сохранения переменной без Bundle и Application через freezes text
-        //хотя, если капнуть. он ичпользует онсэйвинстатнстейт всё равно..каждая вью использует
+        //хотя, если капнуть. он использует онсэйвинстатнстейт всё равно..каждая вью использует
         //тему ниже используй , если у тебя просто текст, цифра
         if (savedInstanceState == null) {  //первый запуск
             textView.text = "0"
         }
+
         activityCallback = object : ActivityCallback {
             override fun update(data: Int) = runOnUiThread {
                 textView.setText(data)

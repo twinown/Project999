@@ -38,6 +38,8 @@ interface UiObservable<T : Any> : UiUpdate<T> {
          * **/
         override fun update(data: T) = synchronized(lock) {
             if (observer.isEmpty()) {   //еще не вызвался онрезюм у второй активити
+                //но вызвался онпоуз у первой активити
+                //этот кэш мб и хранилища какого-то
                 cache = data
                 //process death = cache = null
             } else {
@@ -47,6 +49,7 @@ interface UiObservable<T : Any> : UiUpdate<T> {
             }
         }
 
+        //для синхронайзда
         companion object {
             private val lock = Object()
         }
