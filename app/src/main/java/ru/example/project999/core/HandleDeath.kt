@@ -1,4 +1,4 @@
-package ru.example.project999
+package ru.example.project999.core
 
 
 //этот интерфейс нужен для того, что понять произошла смерть процесса или просто поворот экрана
