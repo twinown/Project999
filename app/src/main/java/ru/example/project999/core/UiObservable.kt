@@ -1,16 +1,15 @@
-package ru.example.project999
+package ru.example.project999.core
 
 import androidx.annotation.MainThread
 
 
-interface UiObservable<T : Any> : UiUpdate<T> {
+interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
 
-    fun updateObserver(uiObserver: UiObserver<T> = UiObserver.Empty())
 
     //для того, чтоб кэш не держать долго, а выше было (ты удалил). чтоб кэш пинговался
     //отдача данных один раз в ту же актитвити,короче говоря
     //сингл используется вместе в фризес текст, кэш обнуляется при смерти, а всё живёт за счёт бандла
-    class Single<T : Any> : UiObservable<T> {
+    abstract class Single<T : Any> : UiObservable<T> {
 
         @Volatile
         private var cache: T? = null
@@ -59,6 +58,10 @@ interface UiObservable<T : Any> : UiUpdate<T> {
 //T точно не null
 interface UiUpdate<T : Any> {
     fun update(data: T)
+}
+
+interface UpdateObserver<T : Any> {
+    fun updateObserver(uiObserver: UiObserver<T> = UiObserver.Empty())
 }
 
 interface UiObserver<T : Any> : UiUpdate<T> {
