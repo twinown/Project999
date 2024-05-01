@@ -2,5 +2,7 @@
 <resources>
     <string name="app_name">Project 999</string>
     <string name="hello_world">Привет Мир</string>
-    <string name="playing">Воспроизводи</string>
+    <string name="playing">Воспроизводим</string>
+    <string name="play">Воспроизвести</string>
+    <string name="subscribe">Подписаться</string>
 </resources>

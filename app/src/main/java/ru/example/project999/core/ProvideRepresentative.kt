@@ -17,7 +17,7 @@ interface ProvideRepresentative {
     ) : ProvideRepresentative {
         override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
             return when (clasz) {
-                MainRepresentative::class.java -> MainModule().representative()
+                MainRepresentative::class.java -> MainModule(core).representative()
                 DashboardRepresentative::class.java -> DashboardModule(core).representative()
                 SubscriptionRepresentative::class.java -> SubscriptionModule(
                     core,

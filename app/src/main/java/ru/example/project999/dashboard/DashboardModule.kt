@@ -10,7 +10,6 @@ class DashboardModule(
 
     override fun representative(): DashboardRepresentative {
         val cache = UserPremiumCache.Base(core.sharedPreferences())
-
         return if (cache.isUserPremium()) {
             DashboardRepresentative.Premium(PremiumDashboardObservable.Base())
         } else {
