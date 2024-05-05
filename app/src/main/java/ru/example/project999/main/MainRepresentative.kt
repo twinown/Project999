@@ -3,6 +3,7 @@ package ru.example.project999.main
 import androidx.annotation.MainThread
 import ru.example.project999.core.Representative
 import ru.example.project999.core.UiObserver
+import ru.example.project999.dashboard.DashboardScreen
 
 @MainThread
 interface MainRepresentative : Representative<Screen> {
@@ -23,7 +24,7 @@ interface MainRepresentative : Representative<Screen> {
 
         override fun showDashboard(firstTime: Boolean) {
             if (firstTime)
-                navigation.update(Screen.Dashboard)
+                navigation.update(DashboardScreen)
         }
     }
 }

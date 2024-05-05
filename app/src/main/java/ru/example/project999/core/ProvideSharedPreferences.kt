@@ -24,7 +24,7 @@ interface Core : ProvideNavigation, ProvideSharedPreferences {
         override fun navigation(): Navigation.Mutable = navigation
 
         override fun sharedPreferences(): SharedPreferences {
-            return context.getSharedPreferences("object999", Context.MODE_PRIVATE)
+            return context.getSharedPreferences("project999", Context.MODE_PRIVATE)
         }
     }
 }

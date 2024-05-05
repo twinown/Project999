@@ -3,7 +3,7 @@ package ru.example.project999.dashboard
 import ru.example.project999.core.Representative
 import ru.example.project999.core.UiObserver
 import ru.example.project999.main.Navigation
-import ru.example.project999.main.Screen
+import ru.example.project999.subscription.SubscriptionScreen
 
 interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
 
@@ -12,7 +12,7 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
     class Base(private val navigation: Navigation.Update) : DashboardRepresentative {
         override fun play() {
             //что вызывает этот метод? апдейт в активити ?
-            navigation.update(Screen.Subscription)
+            navigation.update(SubscriptionScreen)
         }
     }
 

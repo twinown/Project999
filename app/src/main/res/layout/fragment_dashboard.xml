@@ -5,23 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#ff0000"
  >
 
-    <TextView
+    <ru.example.project999.core.CustomTextView
         android:id="@+id/show_Playing_TextView"
         android:text="@string/playing"
         android:gravity="center"
         android:visibility="gone"
         tools:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       />
+        android:layout_height="wrap_content" />
 
-    <Button
+    <ru.example.project999.core.CustomButton
         android:id="@+id/playButton"
-        android:text="@string/playing"
+        android:text="@string/play"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 </LinearLayout>
 

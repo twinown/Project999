@@ -1,17 +1,15 @@
 package ru.example.project999.dashboard
 
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
+import ru.example.project999.core.HideAndShow
 
 interface PremiumDashboardUiState {
 
-    fun show(button: Button, textView: TextView)
+    fun show(button: HideAndShow, text: HideAndShow)
 
     object Playing : PremiumDashboardUiState {
-        override fun show(button: Button, textView: TextView) {
-            button.visibility = View.GONE
-            textView.visibility = View.VISIBLE
+        override fun show(button: HideAndShow, text: HideAndShow) {
+            button.hide()
+            text.show()
         }
 
     }

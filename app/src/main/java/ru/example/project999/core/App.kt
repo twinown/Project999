@@ -1,7 +1,6 @@
 package ru.example.project999.core
 
 import android.app.Application
-import android.util.Log
 
 class App : Application(), ProvideRepresentative, CleanRepresentative {
 
@@ -10,8 +9,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     private lateinit var core: Core
     private lateinit var factory: ProvideRepresentative.Factory
 
-    private val handleDeath = HandleDeath.Base()
-    private var localCache = ""
+    //private var localCache = ""
 
     override fun onCreate() {
         super.onCreate()
@@ -24,6 +22,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     }
 
     //* - что угодно
+    //это нужно , чтоб при поворотах экрана мы использовали тот же репрезентатив
     override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
         return if (representativeMap.containsKey(clasz)) {
             representativeMap[clasz] as T
@@ -34,23 +33,5 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
         }
     }
 
-    //топ хэндлер смерти процесса
-    fun activityCreated(firstOpening: Boolean) {
-        if (firstOpening) {
-            //init local cache
-            localCache = "a"
-            Log.d("nn97", "this is very first opening the app")
-            handleDeath.firstOpening()
-        } else {
-            if (handleDeath.wasDeathHappened()) {
-                //go to permanent storage and get localCache
-                Log.d("nn97", "death happened")
-                handleDeath.deathHandled()
-            } else {
-                //use local cache and dont use permanent
-                Log.d("nn97", "just activity recreated")
-            }
-        }
 
-    }
 }
