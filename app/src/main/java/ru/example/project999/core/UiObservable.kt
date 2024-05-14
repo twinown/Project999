@@ -20,12 +20,14 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
 
         //на он резюме
         @MainThread
+        //вызывается  обзерваблом
         override fun updateObserver(uiObserver: UiObserver<T>) = synchronized(lock) {
             observer = uiObserver
             if (!observer.isEmpty()) {
                 //в ебучем котлине здесь проверка кэша на нулл идёт
                 //по сути. сохранение надписи в обсервере ака репрезентативе ака аппликашне
                 cache?.let {
+                    //эта фигня дёргает метод в мэйн активити
                     observer.update(it)
                     cache = null
                 }
@@ -35,6 +37,7 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         /**
          * called by  model (типо тред у нас, то есть другой)
          * **/
+        //вызывается у обсервераблом
         override fun update(data: T) = synchronized(lock) {
             if (observer.isEmpty()) {   //еще не вызвался онрезюм у второй активити
                 //но вызвался онпоуз у первой активити
@@ -60,10 +63,12 @@ interface UiUpdate<T : Any> {
     fun update(data: T)
 }
 
+//пингование от обзервабла самому обзерверу
 interface UpdateObserver<T : Any> {
     fun updateObserver(uiObserver: UiObserver<T> = UiObserver.Empty())
 }
 
+//пингование от обзервера уже активити (типо ) через ф -цию
 interface UiObserver<T : Any> : UiUpdate<T> {
     fun isEmpty(): Boolean = false
 

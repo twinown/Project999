@@ -19,17 +19,18 @@ interface SubscriptionRepresentative : Representative<Unit> {
     ) : SubscriptionRepresentative {
 
         //init блок = конструктор
+        //первичный конструктор уже есть
         init {
-            Log.d("nn97", "SubscriptionRepresentative init called")
+            Log.d("nn97", "SubscriptionRepresentative init")
         }
 
         override fun subscribe() {
+            //на клике идёт сохранение в шердпреф
             userPremiumCache.saveUserPremium()
             clear.clear(DashboardRepresentative::class.java)
             clear.clear(SubscriptionRepresentative::class.java)
+            //переход на дэшборд
             navigation.update(DashboardScreen)
         }
-
-
     }
 }

@@ -4,6 +4,7 @@ import ru.example.project999.core.UiObservable
 import ru.example.project999.core.UiUpdate
 import ru.example.project999.core.UpdateObserver
 
+//зачем это?
 interface Navigation {
 
     interface Update : UiUpdate<Screen>

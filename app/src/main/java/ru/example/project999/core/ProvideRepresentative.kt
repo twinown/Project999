@@ -7,8 +7,12 @@ import ru.example.project999.main.MainRepresentative
 import ru.example.project999.subscription.SubscriptionModule
 import ru.example.project999.subscription.SubscriptionRepresentative
 
+//поставщик репрезентативов, как я понял
 interface ProvideRepresentative {
 
+    //сюда из аппликашна
+    //короче - это же фабрика репрезентативов, значит, ты сюда будешь приходить и для
+    //создания мэйн репра, дашборд репра, сабскрип репра
     fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T
 
     class Factory(

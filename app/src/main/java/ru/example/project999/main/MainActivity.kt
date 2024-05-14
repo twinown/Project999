@@ -21,10 +21,14 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         //здесь активити получает доступ к репрезентативу
         //я активити даю доступ к репрезентативу
         //репрезентатив дали активити
+        //этот метод вызывается в аппликашне
         representative = provideRepresentative(MainRepresentative::class.java)
 
-
+        //обзервер = колбэк = активити..грубо прям говоря
         activityCallback = object : ActivityCallback {
+            //КОГДА ЭТА Ф - ЦИЯ ВЫЗЫВАЕТСЯ ?????? она вызывается после он резюма
+            //который дергает метод updateObserver который дёргает метод update() у обзервера
+            //после startGettingUpdates в onResume
             override fun update(data: Screen) = runOnUiThread {
                 data.show(supportFragmentManager, R.id.container)
             }
@@ -48,6 +52,8 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         representative.stopGettingUpdates()
     }
 
+    //вызывается выше
+    // TODO: почему потом эта функция дёргается ещё пару раз ?? дебажь ещё и ещё
     override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T =
         (application as ProvideRepresentative).provideRepresentative(clasz)
 

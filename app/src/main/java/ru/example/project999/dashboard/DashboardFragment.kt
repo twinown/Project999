@@ -25,6 +25,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
+    //раньше было так
     /*  override fun onCreate(savedInstanceState: Bundle?) {
           super.onCreate(savedInstanceState)
           dashboardRepresentative = (requireActivity() as ProvideRepresentative)
@@ -49,10 +50,20 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
             representative.play()
         }
         callback = object : UiObserver<PremiumDashboardUiState> {
+            //эт вызывается,когда уже премиум, у обсервера, коим является твой фрагмент
+            //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже, в нем вызывается
+            // шоу из премиумдэшбордюайстейта
             override fun update(data: PremiumDashboardUiState) {
                 data.show(button, textView)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("nn97", "Dashboard fragment onResume")
+        //дёргаются коллбэки
+        representative.startGettingUpdates(callback)
     }
 
     override fun onDestroyView() {
@@ -67,11 +78,6 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("nn97", "Dashboard fragment onResume")
-        representative.startGettingUpdates(callback)
-    }
 
     override fun onPause() {
         super.onPause()

@@ -4,9 +4,13 @@ import android.app.Application
 
 class App : Application(), ProvideRepresentative, CleanRepresentative {
 
+    //хранение репрезентативов
+    //надо чистить
     private val representativeMap = mutableMapOf<Class<out Representative<*>>, Representative<*>>()
 
     private lateinit var core: Core
+
+    //создание репрезентативов в фабрике
     private lateinit var factory: ProvideRepresentative.Factory
 
     //private var localCache = ""
@@ -14,6 +18,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     override fun onCreate() {
         super.onCreate()
         core = Core.Base(this)
+        //здесь фабрика
         factory = ProvideRepresentative.Factory(core, this)
     }
 
@@ -28,7 +33,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
             representativeMap[clasz] as T
         } else {
             val representative = factory.provideRepresentative(clasz)
-            representativeMap[clasz] = representative
+            representativeMap[clasz] = representative   //тот же map.put()
             representative
         }
     }

@@ -4,11 +4,15 @@ import ru.example.project999.core.Core
 import ru.example.project999.core.Module
 import ru.example.project999.main.UserPremiumCache
 
+//бэйз или премиум будет решать в модуле, исходя из кэша
+//то есть создаём объект дэшбордрепрезентатива: лиюо базовый, либо премиум, смотря на кэш
 class DashboardModule(
     private val core: Core
 ) : Module<DashboardRepresentative> {
 
+
     override fun representative(): DashboardRepresentative {
+        //получение шерда из провайда
         val cache = UserPremiumCache.Base(core.sharedPreferences())
         return if (cache.isUserPremium()) {
             DashboardRepresentative.Premium(PremiumDashboardObservable.Base())

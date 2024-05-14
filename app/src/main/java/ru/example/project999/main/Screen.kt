@@ -4,13 +4,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
 interface Screen {
+    //вызывается в мэйн активити
     fun show(fragmentManager: FragmentManager, containerId: Int)
 
-    //одновременно живёт несколько фрагментов,предыдущий уходитв стек
+    //одновременно живёт несколько фрагментов,предыдущий уходит в стек
     abstract class Add(private val fragmentClass: Class<out Fragment>) : Screen {
 
         override fun show(fragmentManager: FragmentManager, containerId: Int) {
-            fragmentManager.beginTransaction().replace(containerId, fragmentClass.newInstance())
+            fragmentManager.beginTransaction()
+                .replace(containerId, fragmentClass.newInstance())
                 .addToBackStack(fragmentClass.name)
                 .commit()
         }
@@ -21,7 +23,8 @@ interface Screen {
     abstract class Replace(private val fragmentClass: Class<out Fragment>) : Screen {
 
         override fun show(fragmentManager: FragmentManager, containerId: Int) {
-            fragmentManager.beginTransaction().replace(containerId, fragmentClass.newInstance())
+            fragmentManager.beginTransaction()
+                .replace(containerId, fragmentClass.newInstance())
                 .commit()
         }
     }

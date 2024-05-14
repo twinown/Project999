@@ -1,5 +1,6 @@
 package ru.example.project999.core
 
+//интерфейс маркер/маркеровочный
 interface Representative<T : Any> {
 
     fun startGettingUpdates(callback: UiObserver<T>) = Unit
