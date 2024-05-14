@@ -17,7 +17,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
 
     override fun onCreate() {
         super.onCreate()
-        core = Core.Base(this)
+        core = Core.Base(this) //синглтон объект(привязан к аппликашну)
         //здесь фабрика
         factory = ProvideRepresentative.Factory(core, this)
     }
@@ -28,6 +28,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
 
     //* - что угодно
     //это нужно , чтоб при поворотах экрана мы использовали тот же репрезентатив
+    //потому хранится в алликашне
     override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
         return if (representativeMap.containsKey(clasz)) {
             representativeMap[clasz] as T

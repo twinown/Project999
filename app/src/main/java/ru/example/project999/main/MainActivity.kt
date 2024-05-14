@@ -1,6 +1,7 @@
 package ru.example.project999.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import ru.example.project999.R
 import ru.example.project999.core.ProvideRepresentative
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) //инициализация дерева вьюх
-
+        Log.d("nn97","$savedInstanceState")
         //двойная связь
         //тут актвити связывется с репрезентативом
         //здесь активити получает доступ к репрезентативу
@@ -34,6 +35,9 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
             }
         }
 
+
+        //если не первый раз, то этот метод вызовется, но там пустышка будет
+        //тк он работает только при первом запуске
         representative.showDashboard(savedInstanceState == null)
 
     }

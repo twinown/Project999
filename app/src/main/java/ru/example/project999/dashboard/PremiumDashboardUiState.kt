@@ -5,6 +5,7 @@ import ru.example.project999.core.HideAndShow
 //чё просиходит , когда ты премиум..эта фунция вызывается  в дашбордфрагменте при клике
 interface PremiumDashboardUiState {
 
+    //видишь, вместо кнопок приходит интерфейс
     fun show(button: HideAndShow, text: HideAndShow)
 
     object Playing : PremiumDashboardUiState {

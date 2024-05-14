@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import ru.example.project999.R
+import ru.example.project999.core.CustomButton
 import ru.example.project999.main.BaseFragment
 
 class SubscriptionFragment :
@@ -29,7 +30,7 @@ class SubscriptionFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val button = view.findViewById<Button>(R.id.subscribe_button)
+        val button = view.findViewById<CustomButton>(R.id.subscribe_button)
         button.setOnClickListener {
             representative.subscribe()
         }

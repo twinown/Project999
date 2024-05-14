@@ -18,7 +18,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         Log.d("nn97", "DashboardFragment init")
     }
 
-    private lateinit var callback: UiObserver<PremiumDashboardUiState>
+    private lateinit var callback: UiObserver<PremiumDashboardUiState> //для стейта
 
     //  private lateinit var dashboardRepresentative: DashboardRepresentative
 
