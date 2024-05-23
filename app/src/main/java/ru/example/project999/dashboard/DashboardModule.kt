@@ -11,8 +11,9 @@ class DashboardModule(
 ) : Module<DashboardRepresentative> {
 
 
+    //здесь решается, какой у тебя дэшборд класс -премиум или базовый
     override fun representative(): DashboardRepresentative {
-        //получение шерда из провайда
+        //получение шерда идёт из провайда
         val cache = UserPremiumCache.Base(core.sharedPreferences())
         return if (cache.isUserPremium()) {
             DashboardRepresentative.Premium(PremiumDashboardObservable.Base())

@@ -1,6 +1,5 @@
 package ru.example.project999.dashboard
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -22,9 +21,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
 
     //  private lateinit var dashboardRepresentative: DashboardRepresentative
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
+
     //раньше было так
     /*  override fun onCreate(savedInstanceState: Bundle?) {
           super.onCreate(savedInstanceState)
@@ -32,15 +29,20 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
               .provideRepresentative(DashboardRepresentative::class.java)
       }*/
 
+    //он не нужен ,потому что в baseFragment в конструктор кидается твой id макета фрагмента
     /*    override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View? {
-            return inflater.inflate(, container, false)
+            return inflater.inflate(container, false)
         }*/
 
     //здесь можно работать со вьюхой
+    //This is the appropriate place to set up the initial state of your view,
+    // to start observing LiveData instances whose callbacks update the fragment's
+    // view, and to set up adapters on any RecyclerView or ViewPager2 instances in
+    // your fragment's view.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("nn97", "dashboard fragment`s onViewCreated")
@@ -49,9 +51,10 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         button.setOnClickListener {
             representative.play()
         }
+
         callback = object : UiObserver<PremiumDashboardUiState> {
-            //эт вызывается,когда уже премиум, у обсервера, коим является твой фрагмент
-            //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже, в нем вызывается
+            //эт вызывается в uiobserable,когда уже премиум, у обсервера, коим является твой фрагмент
+            //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже,если премиум, в нем вызывается
             // шоу из премиумдэшбордюайстейта
             override fun update(data: PremiumDashboardUiState) {
                 data.show(button, textView)
@@ -63,6 +66,11 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         super.onResume()
         Log.d("nn97", "Dashboard fragment onResume")
         //дёргаются коллбэки
+        //зачем метод этот здесь ?
+        //фрагмент дали репрезентативу
+        //здесь репрезентатив получает доступ к фрагменту
+        //здесть репрезентатив ака аппликашн держит ссылку на фрагмент
+        //я репрезентативу даю доступ к активити
         representative.startGettingUpdates(callback)
     }
 

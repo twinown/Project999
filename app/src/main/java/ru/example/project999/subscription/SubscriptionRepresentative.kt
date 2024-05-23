@@ -29,7 +29,7 @@ interface SubscriptionRepresentative : Representative<Unit> {
             userPremiumCache.saveUserPremium()
             clear.clear(DashboardRepresentative::class.java)
             clear.clear(SubscriptionRepresentative::class.java)
-            //переход на дэшборд
+            //переход на дэшборд. дёргается в мэйнактивити, видишь. тут навигашн
             navigation.update(DashboardScreen)
         }
     }

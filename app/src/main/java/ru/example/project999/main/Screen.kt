@@ -8,6 +8,7 @@ interface Screen {
     fun show(fragmentManager: FragmentManager, containerId: Int)
 
     //одновременно живёт несколько фрагментов,предыдущий уходит в стек
+    //сабскрипшн
     abstract class Add(private val fragmentClass: Class<out Fragment>) : Screen {
 
         override fun show(fragmentManager: FragmentManager, containerId: Int) {
@@ -20,6 +21,7 @@ interface Screen {
 
     //out - значит фрагмент и все его наследники иначе будет думать,чо только фрагмент
     //фрагмент прям заменяется (старый удаляется)
+    //дашборд
     abstract class Replace(private val fragmentClass: Class<out Fragment>) : Screen {
 
         override fun show(fragmentManager: FragmentManager, containerId: Int) {

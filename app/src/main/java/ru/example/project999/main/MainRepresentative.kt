@@ -15,7 +15,8 @@ interface MainRepresentative : Representative<Screen> {
     class Base(private val navigation: Navigation.Mutable) : MainRepresentative {
 
         override fun startGettingUpdates(callback: UiObserver<Screen>) {
-
+            // эта функция ведёт в uiobservable
+            //там дёргается метод observer.update(), тк кэш не нулл, который стреляет в MainActivity
             navigation.updateObserver(callback) //вызывается в uiobservable
         }
 
@@ -25,8 +26,11 @@ interface MainRepresentative : Representative<Screen> {
         }
 
         override fun showDashboard(firstTime: Boolean) {
-            if (firstTime)
-            //эта функция ведёт в uiobservable
+            if (firstTime) //ПЕРВЫЙ СТАРТ ПРИЛОЖЕНИЯ
+            //эта функция выз-ся в mainactivity, по итогу
+            // отсюда идёт в uiobservable, там и дёргается..observer.isEmpty()==true
+            //сохранение DashboardScreen : Screen.Replace(DashboardFragment::class.java) в кэш
+            // ведь твой мэйн репрезентатив - обзервабл
                 navigation.update(DashboardScreen)
         }
     }

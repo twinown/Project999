@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import ru.example.project999.main.Navigation
 
-//получаем наш шэрд преференс
+//создание  нашего шэрд преференса
 interface ProvideSharedPreferences {
 
     fun sharedPreferences(): SharedPreferences
@@ -22,10 +22,13 @@ interface Core : ProvideNavigation, ProvideSharedPreferences {
 
         private val navigation = Navigation.Base()
 
+        //метод , вызываемый во всех модулях
         override fun navigation(): Navigation.Mutable = navigation
 
+        //вызывается метод в модулях
         override fun sharedPreferences(): SharedPreferences {
             //посотри сам , чё за MODE
+            //создание через контекст
             return context.getSharedPreferences("project999", Context.MODE_PRIVATE)
         }
     }

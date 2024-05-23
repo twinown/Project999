@@ -3,7 +3,6 @@ package ru.example.project999.subscription
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import ru.example.project999.R
 import ru.example.project999.core.CustomButton
 import ru.example.project999.main.BaseFragment
@@ -29,13 +28,13 @@ class SubscriptionFragment :
      }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("nn97", " SubscriptionFragment onViewCreated ")
         super.onViewCreated(view, savedInstanceState)
         val button = view.findViewById<CustomButton>(R.id.subscribe_button)
         button.setOnClickListener {
             representative.subscribe()
         }
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -49,6 +48,7 @@ class SubscriptionFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d("nn97", "Subscription fragment onDestroyView")
     }
 
     override fun onDestroy() {

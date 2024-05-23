@@ -19,6 +19,7 @@ interface UserPremiumCache {
 
     class Base(
         private val sharedPreferences: SharedPreferences,
+        //эта переменная уже объявлена , потому конструктор не кидается
         private val key: String = "isUserPremium"
     ) : Mutable {
 

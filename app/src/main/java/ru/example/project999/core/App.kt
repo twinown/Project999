@@ -1,6 +1,7 @@
 package ru.example.project999.core
 
 import android.app.Application
+import android.util.Log
 
 class App : Application(), ProvideRepresentative, CleanRepresentative {
 
@@ -28,8 +29,12 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
 
     //* - что угодно
     //это нужно , чтоб при поворотах экрана мы использовали тот же репрезентатив
+    //сюда из активити ВСЕГДА, даже при вызове из фрагментов
     //потому хранится в алликашне
+    //сервис локатор вот он
+    //связка аппликашн(этот метод)+фабрика+лист
     override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
+        Log.d("nn97", "provideRepresentative() в аппликашне")
         return if (representativeMap.containsKey(clasz)) {
             representativeMap[clasz] as T
         } else {

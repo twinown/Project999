@@ -11,8 +11,10 @@ import ru.example.project999.subscription.SubscriptionRepresentative
 interface ProvideRepresentative {
 
     //сюда из аппликашна
-    //короче - это же фабрика репрезентативов, значит, ты сюда будешь приходить и для
+    //сюда из фрагментов через активити
+    //короче - это же ФАБРИКА репрезентативов, значит, ты сюда будешь приходить и для
     //создания мэйн репра, дашборд репра, сабскрип репра
+    //вызывается из аппликашна
     fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T
 
     class Factory(
@@ -20,8 +22,9 @@ interface ProvideRepresentative {
         private val clear: CleanRepresentative
     ) : ProvideRepresentative {
         override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
-            return when (clasz) { //по интерфейсу отдаёт класс
+            return when (clasz) { //по интерфейсу отдаёт класс из модуля
                 MainRepresentative::class.java -> MainModule(core).representative()
+                //ниже первое обращение к шэрдам
                 DashboardRepresentative::class.java -> DashboardModule(core).representative()
                 SubscriptionRepresentative::class.java -> SubscriptionModule(
                     core,
