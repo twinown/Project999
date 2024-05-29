@@ -17,7 +17,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         Log.d("nn97", "DashboardFragment init")
     }
 
-    private lateinit var callback: UiObserver<PremiumDashboardUiState> //для стейта
+    private lateinit var observer: UiObserver<PremiumDashboardUiState> //для стейта
 
     //  private lateinit var dashboardRepresentative: DashboardRepresentative
 
@@ -52,7 +52,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
             representative.play()
         }
 
-        callback = object : UiObserver<PremiumDashboardUiState> {
+        observer = object : UiObserver<PremiumDashboardUiState> {
             //эт вызывается в uiobserable,когда уже премиум, у обсервера, коим является твой фрагмент
             //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже,если премиум, в нем вызывается
             // шоу из премиумдэшбордюайстейта
@@ -71,7 +71,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         //здесь репрезентатив получает доступ к фрагменту
         //здесть репрезентатив ака аппликашн держит ссылку на фрагмент
         //я репрезентативу даю доступ к активити
-        representative.startGettingUpdates(callback)
+        representative.startGettingUpdates(observer)
     }
 
     override fun onDestroyView() {

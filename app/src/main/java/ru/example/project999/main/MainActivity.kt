@@ -40,8 +40,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         //если не первый раз, то этот метод вызовется, но там пустышка будет
         //тк он работает только при первом запуске
         //корочЕ, он тут картинку не делает, он вообще запускает update  в uiobservable
-        //и кидает в кэш твой DashbordScreen И ВСЁ непосредвенное обновление уже идёт в onResume
-
+        //и кидает в кэш твой DashbordScreen И ВСЁ непосредственное обновление уже идёт в onResume
         //сюда приходдит скрин!!!далее там
         representative.showDashboard(savedInstanceState == null)  //navigation.update(DashboardScreen)
 
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
     override fun onResume() {
         //активити дали репрезентативу
         //здесь репрезентатив получает доступ к активити
-        //здесть репрезентатив ака аппликашн держит ссылку на активити
+        //здесь репрезентатив ака аппликашн держит ссылку на активити
         //я репрезентативу даю доступ к активити
         super.onResume()
         Log.d("nn97", "Mainact onresume")
