@@ -7,7 +7,7 @@ import ru.example.project999.main.MainRepresentative
 import ru.example.project999.subscription.SubscriptionModule
 import ru.example.project999.subscription.SubscriptionRepresentative
 
-//поставщик репрезентативов, как я понял
+//поставщик репрезентативов, как я понял//фабрика объектов
 interface ProvideRepresentative {
 
     //сюда из аппликашна

@@ -31,10 +31,12 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
             //который дергает метод startgettingupdates, который дёргает
             //updateObserver в Uiobservable, который дёргает метод update() у обзервера
             //коим явлется твой колбэкактивити
-            //сюда приходит как раз DashboardScreen :Screen
+            //сюда приходит как раз DashboardScreen :Screen и не только
             override fun update(data: Screen) = runOnUiThread {
                 data.show(supportFragmentManager, R.id.container)
             }
+
+
         }
 
         //если не первый раз, то этот метод вызовется, но там пустышка будет
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         super.onResume()
         Log.d("nn97", "Mainact onresume")
 
-        //тут и вызывается метод показывания фрагмента
+        //тут и вызывается метод показывания фрагмента,  вызов update() выше
         representative.startGettingUpdates(activityCallback) // navigation.updateObserver(callback)
 
     }
@@ -80,7 +82,9 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
 //это неявное активити..почему ? да потому что объект класса эмпти через интерфейс ты создаёшь
 //в классе активити..соответсвенно, он живёт столько же,скока активити
 //потому и может ТИПО быть активити
-interface ActivityCallback : UiObserver<Screen>
+interface ActivityCallback : UiObserver<Screen> {
+    override fun isEmpty() = false
+}
 
 
 

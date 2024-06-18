@@ -4,7 +4,7 @@ package ru.example.project999.core
 //этот интерфейс нужен для того, что понять произошла смерть процесса или просто поворот экрана
 interface HandleDeath {
     fun firstOpening()
-    fun wasDeathHappened(): Boolean
+    fun didDeathHappen(): Boolean
     fun deathHandled()
 
 
@@ -15,7 +15,7 @@ interface HandleDeath {
             deathHappened = false
         }
 
-        override fun wasDeathHappened(): Boolean {
+        override fun didDeathHappen(): Boolean {
             return deathHappened
         }
 

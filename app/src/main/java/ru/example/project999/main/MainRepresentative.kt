@@ -9,7 +9,6 @@ import ru.example.project999.dashboard.DashboardScreen
 //наследование от маркера для дженерик типизации
 interface MainRepresentative : Representative<Screen> {
 
-
     fun showDashboard(firstTime: Boolean)
 
     class Base(private val navigation: Navigation.Mutable) : MainRepresentative {
@@ -27,10 +26,10 @@ interface MainRepresentative : Representative<Screen> {
 
         override fun showDashboard(firstTime: Boolean) {
             if (firstTime) //ПЕРВЫЙ СТАРТ ПРИЛОЖЕНИЯ
-            //эта функция выз-ся в mainactivity, по итогу
             // отсюда идёт в uiobservable, там и дёргается..observer.isEmpty()==true
             //сохранение DashboardScreen : Screen.Replace(DashboardFragment::class.java) в кэш
             // ведь твой мэйн репрезентатив - обзервабл
+            //ТОЛЬКО ДЛЯ СОХРАНЕНИЯ В КЭШ
                 navigation.update(DashboardScreen)
         }
     }

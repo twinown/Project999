@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import ru.example.project999.main.Navigation
 
-//создание  нашего шэрд преференса
+//создание  нашего шэрд преференса здесь !!!
 interface ProvideSharedPreferences {
 
     fun sharedPreferences(): SharedPreferences

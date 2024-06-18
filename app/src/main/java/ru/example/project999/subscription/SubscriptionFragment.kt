@@ -19,6 +19,7 @@ class SubscriptionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("nn97", " SubscriptionFragment onViewCreated ")
         super.onViewCreated(view, savedInstanceState)
+        //они сами знают.как сохранять свою визибилити
         val subscribeButton = view.findViewById<CustomButton>(R.id.subscribe_button)
         val progressBar = view.findViewById<CustomProgressBar>(R.id.progressBar)
         val finishButton = view.findViewById<CustomButton>(R.id.finish_button)
@@ -29,13 +30,23 @@ class SubscriptionFragment :
             representative.finish()
         }
 
-        observer = object : UiObserver<SubscriptionUiState> {
+        //TODO ПРАВИЛЬНО ТАК ??? КАК ЖЕ БУДЕТ ВЫПОЛНЯТЬСЯ МЕТОД finish()????
+        observer = object : SubscriptionObserver {
+            //будет дёргаться из subscribe() - обновление ui
             override fun update(data: SubscriptionUiState) =
-                requireActivity().runOnUiThread {
-
+                requireActivity().runOnUiThread { //из другого потока, потому вот так
+                    data.observed(representative) //по дефолту observable.clear()
+                    data.show(subscribeButton, progressBar, finishButton)
                 }
-
         }
+
+        representative.init(SaveAndRestoreSubscriptionUiState.Base(savedInstanceState)) //сделали обёртку в SaveAndRestore
+    }
+
+    //сохранение стейта всего экрана
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        representative.save(SaveAndRestoreSubscriptionUiState.Base(outState))
     }
 
     override fun onResume() {
@@ -58,5 +69,9 @@ class SubscriptionFragment :
     override fun onDestroy() {
         super.onDestroy()
         Log.d("nn97", "Subscription fragment onDestroy")
+    }
+
+    interface SubscriptionObserver : UiObserver<SubscriptionUiState> {
+        override fun isEmpty(): Boolean = false
     }
 }

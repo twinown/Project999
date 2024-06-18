@@ -52,7 +52,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
             representative.play()
         }
 
-        observer = object : UiObserver<PremiumDashboardUiState> {
+        observer = object : DashboardObserver {
             //эт вызывается в uiobserable,когда уже премиум, у обсервера, коим является твой фрагмент
             //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже,если премиум, в нем вызывается
             // шоу из премиумдэшбордюайстейта
@@ -71,6 +71,11 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         //здесь репрезентатив получает доступ к фрагменту
         //здесть репрезентатив ака аппликашн держит ссылку на фрагмент
         //я репрезентативу даю доступ к активити
+
+        //он не переопределён в дашбордрепрезентативе В БАЗЕ, а в базовом интерфейсе репрезентатива
+        //там ЮНИТ и написано
+        ////юнит - для тех репрезентативов и их фрагментов. которым  не нужно обновлять себя!!!!!
+        //потому в если бэйз, то ничё не происходит
         representative.startGettingUpdates(observer)
     }
 
@@ -91,5 +96,9 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         super.onPause()
         Log.d("nn97", "Dashboard fragment onPause")
         representative.stopGettingUpdates()
+    }
+
+    interface DashboardObserver : UiObserver<PremiumDashboardUiState> {
+        override fun isEmpty(): Boolean = false
     }
 }

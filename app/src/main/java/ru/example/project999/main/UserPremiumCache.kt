@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 
 //отсюда начали
 //2 действия - изначально, чё нам надо
-//создание шерда
+//здесь именно операция сохранения юзерпремиума
 interface UserPremiumCache {
 
     interface Save {

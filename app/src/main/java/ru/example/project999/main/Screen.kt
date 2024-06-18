@@ -31,4 +31,18 @@ interface Screen {
         }
     }
 
+    //Dashboard -> replace
+    //Subscription -> add
+    //comeback
+    //navigation#navigate(Screen.Pop)...вообще там update()
+    object Pop : Screen {
+        override fun show(fragmentManager: FragmentManager, containerId: Int) {
+            fragmentManager.popBackStack()
+        }
+    }
+
+    //эмпти - плата на нуллабельность
+    object Empty : Screen {
+        override fun show(fragmentManager: FragmentManager, containerId: Int) = Unit
+    }
 }

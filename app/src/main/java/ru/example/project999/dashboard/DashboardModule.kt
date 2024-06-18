@@ -18,7 +18,7 @@ class DashboardModule(
         return if (cache.isUserPremium()) {
             DashboardRepresentative.Premium(PremiumDashboardObservable.Base())
         } else {
-            DashboardRepresentative.Base(core.navigation())
+            DashboardRepresentative.Base(core.navigation()) //Navigation.Base()
         }
     }
 }

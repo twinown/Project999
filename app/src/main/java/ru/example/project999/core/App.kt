@@ -3,6 +3,9 @@ package ru.example.project999.core
 import android.app.Application
 import android.util.Log
 
+
+//он как будто сервис-локатор
+
 class App : Application(), ProvideRepresentative, CleanRepresentative {
 
     //хранение репрезентативов
@@ -12,6 +15,8 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     private lateinit var core: Core
 
     //создание репрезентативов в фабрике
+    //паттерн наблюдатель : управление обзерверами ака репрезентативами всех вьюх
+    //происходит отсюда, аппликашн ака обсервабл
     private lateinit var factory: ProvideRepresentative.Factory
 
     //private var localCache = ""
