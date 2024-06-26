@@ -18,6 +18,8 @@ class DashboardModule(
         return if (cache.isUserPremium()) {
             DashboardRepresentative.Premium(PremiumDashboardObservable.Base())
         } else {
+            //тот же навигашн, что и в остальных - он в одном экзмпляре, хранящемся в аппликашне
+            //тот же кор всегда, тот же метод navigation()
             DashboardRepresentative.Base(core.navigation()) //Navigation.Base()
         }
     }

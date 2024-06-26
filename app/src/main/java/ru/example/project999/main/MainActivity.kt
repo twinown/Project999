@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         representative = provideRepresentative(MainRepresentative::class.java)
 
         //обзервер = колбэк = активити..грубо прям говоря
+        //это анонимный класс - object:ActivityCallback -он держит ссылку на тот класс, В КОТОРОМ НАХОДИТСЯ
+        //со фрагментами та же хрень
         activityCallback = object : ActivityCallback {
             //КОГДА ЭТА Ф - ЦИЯ ВЫЗЫВАЕТСЯ ?????? она вызывается после он резюма
             //который дергает метод startgettingupdates, который дёргает

@@ -16,6 +16,7 @@ interface MainRepresentative : Representative<Screen> {
         override fun startGettingUpdates(callback: UiObserver<Screen>) {
             // эта функция ведёт в uiobservable
             //там дёргается метод observer.update(), тк кэш не нулл, который стреляет в MainActivity
+            //вызывался у навигашна всего один раз и всё, для перехода всегда будет навигашн
             navigation.updateObserver(callback) //вызывается в uiobservable
         }
 

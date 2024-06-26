@@ -20,6 +20,9 @@ interface Core : ProvideNavigation, ProvideSharedPreferences {
 
     class Base(private val context: Context) : Core {
 
+        //этот нав_бэйз будет всегда один и тот же везде при создании репрезентативов, поэтому когда ты вызываешь
+        //у него updateObserver()(только в майнактивити) или update(), то всегда будет дёргаться
+        //observer = mainActivity$onCreate
         private val navigation = Navigation.Base()
 
         //метод , вызываемый во всех модулях

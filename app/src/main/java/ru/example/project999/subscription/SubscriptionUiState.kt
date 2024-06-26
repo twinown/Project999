@@ -5,6 +5,7 @@ import java.io.Serializable
 
 interface SubscriptionUiState : Serializable {
 
+    //по дефолту
     fun observed(representative: SubscriptionObserved) = representative.observed()
 
     fun restoreAfterDeath(

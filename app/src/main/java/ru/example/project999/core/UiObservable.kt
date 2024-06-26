@@ -44,6 +44,9 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
             if (!observer.isEmpty()) {
                 observer.update(cache)
 
+                /*observer - это SubscriptionFragment
+                cache - это SubscriptionUiState$Initial    */
+
             }
 
 

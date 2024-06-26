@@ -30,12 +30,13 @@ class SubscriptionFragment :
             representative.finish()
         }
 
-        //TODO ПРАВИЛЬНО ТАК ??? КАК ЖЕ БУДЕТ ВЫПОЛНЯТЬСЯ МЕТОД finish()????
+        //TODO ПРАВИЛЬНО ТАК ??? КАК ЖЕ БУДЕТ ВЫПОЛНЯТЬСЯ МЕТОД finish()????навигашн всегда один и тот же
         observer = object : SubscriptionObserver {
             //будет дёргаться из subscribe() - обновление ui
             override fun update(data: SubscriptionUiState) =
                 requireActivity().runOnUiThread { //из другого потока, потому вот так
-                    data.observed(representative) //по дефолту observable.clear()
+                    //разобраться в этом методе,нах он
+                    data.observed(representative) //по дефолту observable.clear() у SubscriptionUiState.Initial
                     data.show(subscribeButton, progressBar, finishButton)
                 }
         }
@@ -52,7 +53,7 @@ class SubscriptionFragment :
     override fun onResume() {
         super.onResume()
         Log.d("nn97", "Subscription fragment onResume")
-        representative.startGettingUpdates(observer)
+        representative.startGettingUpdates(observer) //observable.updateObserver()
     }
 
     override fun onPause() {

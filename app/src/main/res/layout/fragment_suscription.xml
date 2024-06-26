@@ -2,9 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ru.example.project999.core.CustomButton
+
         android:id="@+id/subscribe_button"
         android:text="@string/subscribe"
         android:layout_width="wrap_content"
@@ -17,7 +19,8 @@
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:visibility="visible" />
 
     <ru.example.project999.core.CustomButton
         android:visibility="gone"
