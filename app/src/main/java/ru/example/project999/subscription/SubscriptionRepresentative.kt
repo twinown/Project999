@@ -94,7 +94,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             // TODO: КАКИМ ОБРАЗОМ ЭТО ПЕРЕЙДЁТ ЕСЛИ В UIOBSERABLE observer -
             //  это твой  object : UiObserver<SubscriptionUiState>
             // TODO: и его update переопределён во фрагменте..для перехода нужен активитиобзервер,ведь там show()
-            //короче, баклан, смотри, твои обзерваблы все и навигашн - пофакту классы .Base(), нааследующиеся от UiObservable
+            //короче, баклан, смотри, твои обзерваблы все и навигашн - по факту классы .Base(), нааследующиеся от UiObservable
             //то есть это отдельные классы , реализующие методы те все, что в UiObservable,они , по итогу, сохраняют все данные в нём, пока не пере-
             //пишешь. то есть в navigation.Base():UiObserable в observer хранится MainActivity$OnCreate, пока не перепишешь (updateObserver)
             //переписать можно только в MainRepresentative(потому что он Mutable )

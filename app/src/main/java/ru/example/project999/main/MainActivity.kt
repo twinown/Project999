@@ -10,6 +10,9 @@ import ru.example.project999.core.UiObserver
 
 class MainActivity : AppCompatActivity(), ProvideRepresentative {
 
+    //смотри, тут та х -ня с аттачом, он еще не настал ,потому будет ошибка
+    // private val appName = application.getString(R.string.app_name)
+
     private lateinit var representative: MainRepresentative
     private lateinit var activityCallback: ActivityCallback
 
@@ -37,15 +40,13 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
             override fun update(data: Screen) = runOnUiThread {
                 data.show(supportFragmentManager, R.id.container)
             }
-
-
         }
 
-        //если не первый раз, то этот метод вызовется, но там пустышка будет
+        //если не в первый раз, то этот метод вызовется, но там пустышка будет
         //тк он работает только при первом запуске
-        //корочЕ, он тут картинку не делает, он вообще запускает update  в uiobservable
-        //и кидает в кэш твой DashbordScreen И ВСЁ непосредственное обновление уже идёт в onResume
-        //сюда приходдит скрин!!!далее там
+        //корочЕ, он тут картинку не делает, он вообще запускает update в uiobservable
+        //и кидает в кэш твой DashbordScreen И ВСЁ (зачем ??). непосредственное обновление уже идёт в onResume
+        //сюда приходит скрин!!!далее там
         representative.showDashboard(savedInstanceState == null)  //navigation.update(DashboardScreen)
 
     }
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         super.onResume()
         Log.d("nn97", "Mainact onresume")
 
-        //тут и вызывается метод показывания фрагмента,  вызов update() выше
+        //тут и вызывается метод показывания фрагмента,вызов, по итогу, update() анонимного объекта активитиколлбэка выше
         representative.startGettingUpdates(activityCallback) // navigation.updateObserver(callback)
 
     }
@@ -84,6 +85,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
 //это неявное активити..почему ? да потому что объект класса эмпти через интерфейс ты создаёшь
 //в классе активити..соответсвенно, он живёт столько же,скока активити
 //потому и может ТИПО быть активити
+//держит ссылку на тот класс, в котором находится
 interface ActivityCallback : UiObserver<Screen> {
     override fun isEmpty() = false
 }

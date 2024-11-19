@@ -14,7 +14,6 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         private val empty: T
     ) : UiObservable<T> {
 
-
         @Volatile
         //был private
         internal var cache: T = empty

@@ -31,6 +31,7 @@ interface MainRepresentative : Representative<Screen> {
             //сохранение DashboardScreen : Screen.Replace(DashboardFragment::class.java) в кэш
             // ведь твой мэйн репрезентатив - обзервабл
             //ТОЛЬКО ДЛЯ СОХРАНЕНИЯ В КЭШ
+            //для чего в кэш-то ?
                 navigation.update(DashboardScreen)
         }
     }

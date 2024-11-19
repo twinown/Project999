@@ -52,6 +52,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
             representative.play()
         }
 
+        //держит ссылку на тот класс, в котором находится
         observer = object : DashboardObserver {
             //эт вызывается в uiobserable,когда уже премиум, у обсервера, коим является твой фрагмент
             //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже,если премиум, в нем вызывается
