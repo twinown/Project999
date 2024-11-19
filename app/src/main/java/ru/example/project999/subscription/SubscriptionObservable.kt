@@ -2,7 +2,7 @@ package ru.example.project999.subscription
 
 import ru.example.project999.core.UiObservable
 
-
+//SubscriptionObservable : UiObservable<SubscriptionUiState> для удобства
 interface SubscriptionObservable : UiObservable<SubscriptionUiState>, SaveSubscriptionUiState {
     class Base : UiObservable.Single<SubscriptionUiState>(SubscriptionUiState.Empty),
         SubscriptionObservable {

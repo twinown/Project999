@@ -15,7 +15,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     private lateinit var core: Core
 
     //создание репрезентативов в фабрике
-    //паттерн наблюдатель : управление обзерверами ака репрезентативами всех вьюх
+    //паттерн наблюдатель: управление обзерверами ака репрезентативами всех вьюх
     //происходит отсюда, аппликашн ака обсервабл
     private lateinit var factory: ProvideRepresentative.Factory
 

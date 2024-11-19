@@ -10,6 +10,7 @@ import ru.example.project999.core.UiObserver
 import ru.example.project999.main.BaseFragment
 
 class SubscriptionFragment :
+
     BaseFragment<SubscriptionRepresentative>(R.layout.fragment_suscription) {
 
     override val clasz = SubscriptionRepresentative::class.java
@@ -42,6 +43,7 @@ class SubscriptionFragment :
         }
 
         representative.init(SaveAndRestoreSubscriptionUiState.Base(savedInstanceState)) //сделали обёртку в SaveAndRestore
+        //чтоб можно было в инит принимать бандл - сделали обёртку для него
     }
 
     //сохранение стейта всего экрана
