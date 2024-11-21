@@ -12,6 +12,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     //надо чистить
     private val representativeMap = mutableMapOf<Class<out Representative<*>>, Representative<*>>()
 
+
     private lateinit var core: Core
 
     //создание репрезентативов в фабрике
@@ -23,6 +24,7 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
 
     override fun onCreate() {
         super.onCreate()
+        //кор кор - это, вообще,интерфейс, кор.Бэйз - это класс, имплем-щий провайднавигашн и провайдШердпреф
         core = Core.Base(this) //синглтон объект(привязан к аппликашну)
         //здесь фабрика
         factory = ProvideRepresentative.Factory(core, this)

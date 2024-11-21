@@ -24,7 +24,7 @@ interface ProvideRepresentative {
         override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
             return when (clasz) { //по интерфейсу отдаёт класс из модуля
                 MainRepresentative::class.java -> MainModule(core).representative()
-                //ниже первое обращение к шэрдам
+                //ниже первое обращение к шэрдам (через модуль)
                 DashboardRepresentative::class.java -> DashboardModule(core).representative()
                 SubscriptionRepresentative::class.java -> SubscriptionModule(
                     core,

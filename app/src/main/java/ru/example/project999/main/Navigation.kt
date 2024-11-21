@@ -6,7 +6,7 @@ import ru.example.project999.core.UpdateObserver
 
 
 // TODO: !!!!!!!!!!!!!!!!!!!!!!!???????????
-// почему наследуемся от юая  ??
+// почему наследуемся от юаяобсорвабла  ??
 
 interface Navigation {
 

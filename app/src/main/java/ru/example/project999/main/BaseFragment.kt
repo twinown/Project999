@@ -12,6 +12,7 @@ abstract class BaseFragment<T : Representative<*>>(@LayoutRes layoutId: Int) : F
     protected lateinit var representative: T
 
 
+    //то, что классz это  DashboardRepresentative выяснили в fragmentManager.beginTransaction() в инт-се Screen
     protected abstract val clasz: Class<T>
 
     //этот он криат вызывыается у всех твоих фрагментов каждый раз . когда ты просишь открыть фрагмент

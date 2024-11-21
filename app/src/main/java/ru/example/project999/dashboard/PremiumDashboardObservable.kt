@@ -8,6 +8,7 @@ import ru.example.project999.core.UiObservable
 //по сути, ты свой "большой" обзервабл переименовываешь в PremiumDashboardObservable
 //чтоб в конструктор премиумдэшборд репрезентатива кидать дэшбордобзервабл, а не общий
 // TODO: в будущем пойми , почему так - не оч понятно
+//видимо, чтоб не переопределять методы UiObservable`а
 interface PremiumDashboardObservable : UiObservable<PremiumDashboardUiState> {
     class Base : UiObservable.Single<PremiumDashboardUiState>(PremiumDashboardUiState.Empty),
         PremiumDashboardObservable

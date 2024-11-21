@@ -10,9 +10,7 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
     //для того, чтоб кэш не держать долго, а выше было (ты удалил). чтоб кэш пинговался
     //отдача данных один раз в ту же активити,короче говоря
     //сингл используется вместе в фризес текст, кэш обнуляется при смерти, а всё живёт за счёт бандла
-    abstract class Single<T : Any>(
-        private val empty: T
-    ) : UiObservable<T> {
+    abstract class Single<T : Any>(private val empty: T) : UiObservable<T> {
 
         @Volatile
         //был private
@@ -36,10 +34,10 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         //update (), который нужно
         override fun updateObserver(uiObserver: UiObserver<T>) = synchronized(lock) {
             observer =
-                uiObserver //ключевой момент!!!//апдейт обзервер нужен для связи обзервабла(аппл) и
+                uiObserver //ключевой момент!!!//апдейтобзервер нужен для связи обзервабла(аппл) и
             //обзервера(активити/фрагмент)//тут и происходит это выше
             //и не только, потому что в зависимости от того, какой update()
-            // у кого должен вызываться мы и передаём нужный колбэк вьюхи
+            // у кого должен вызываться, мы и передаём нужный колбэк вьюхи
             if (!observer.isEmpty()) {
                 observer.update(cache)
 
@@ -101,6 +99,7 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
     }
 }
 
+//--------------------------------------------------------------------------------------------
 //пингование от обзервера уже активити (типо) через ф -цию
 //это наш колбэк активити и его отпрыски типо (фрагменты)
 interface UiObserver<T : Any> : UiUpdate<T>, IsEmpty {
@@ -114,6 +113,7 @@ interface UiObserver<T : Any> : UiUpdate<T>, IsEmpty {
     }
 }
 
+//----------------------------------------------------------------------------------------------
 //пингование от обзервабла самому обзерверу
 //чтоб не писать фунцию в инт-се выше. сделали новый интерфейс
 interface UpdateObserver<T : Any> {

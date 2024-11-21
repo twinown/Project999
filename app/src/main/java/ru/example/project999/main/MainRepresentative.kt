@@ -32,6 +32,7 @@ interface MainRepresentative : Representative<Screen> {
             // ведь твой мэйн репрезентатив - обзервабл
             //ТОЛЬКО ДЛЯ СОХРАНЕНИЯ В КЭШ
             //для чего в кэш-то ?
+            //чтоб в OnResume активити у тебя был твой дашбордскрин
                 navigation.update(DashboardScreen)
         }
     }

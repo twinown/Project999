@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
             //коим явлется твой колбэкактивити
             //сюда приходит как раз DashboardScreen :Screen и не только
             override fun update(data: Screen) = runOnUiThread {
+                //data это тот кэш,который ты добавил в UiObservable (если речь о первом запуске -DashboardScreen)
                 data.show(supportFragmentManager, R.id.container)
             }
         }
