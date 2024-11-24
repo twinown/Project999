@@ -29,8 +29,8 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
             //например, тут ниже ты вызываешь метод у Navigation.Base()
             //всё завязано на абстракциях
 
-            // TODO: DI
-            //вообще, всё это D солида, но его реализует DI
+            // TODO: DInversion
+            //вообще, всё это D солида, но его реализует DInjection
             //DI - это вот тут, например . у тебя типо у интерфейса вызывается метод, но по факту он вызывается у того
             //кого ты передал в конструктор класса Base
             //а передал ты Navigation.Base(), который имплементирует интерфейс Update:UiUpdate<Screen>,в котором метод update()

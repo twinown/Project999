@@ -37,6 +37,7 @@ class SubscriptionFragment :
             override fun update(data: SubscriptionUiState) =
                 requireActivity().runOnUiThread { //из другого потока, потому вот так
                     //разобраться в этом методе,нах он
+                    //да, я не понял, нафига кэш=эмпти здесь
                     data.observed(representative) //по дефолту observable.clear() у SubscriptionUiState.Initial
                     data.show(subscribeButton, progressBar, finishButton)
                 }

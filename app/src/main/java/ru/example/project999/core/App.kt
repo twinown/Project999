@@ -50,6 +50,4 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
             representative
         }
     }
-
-
 }
