@@ -14,6 +14,7 @@ interface Screen {
         override fun show(fragmentManager: FragmentManager, containerId: Int) {
             fragmentManager.beginTransaction()
                 .replace(containerId, fragmentClass.newInstance())
+                //при эддтубэкстеке предыд фрагмент пересоздаётся заново
                 .addToBackStack(fragmentClass.name)
                 .commit()
         }
@@ -37,6 +38,7 @@ interface Screen {
     //navigation#navigate(Screen.Pop)...вообще там update()
     object Pop : Screen {
         override fun show(fragmentManager: FragmentManager, containerId: Int) {
+            //при попбэкстеке фрагмент предыд. заново не создается
             fragmentManager.popBackStack()
         }
     }

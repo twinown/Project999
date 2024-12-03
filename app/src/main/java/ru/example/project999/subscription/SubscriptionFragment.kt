@@ -31,23 +31,35 @@ class SubscriptionFragment :
             representative.finish()
         }
 
-        //TODO ПРАВИЛЬНО ТАК ??? КАК ЖЕ БУДЕТ ВЫПОЛНЯТЬСЯ МЕТОД finish()????навигашн всегда один и тот же
+        //TODO ПРАВИЛЬНО ТАК ??? КАК ЖЕ БУДЕТ ВЫПОЛНЯТЬСЯ МЕТОД finish()????ответ->навигашн всегда один и тот же
         observer = object : SubscriptionObserver {
             //будет дёргаться из subscribe() - обновление ui
             override fun update(data: SubscriptionUiState) =
-                requireActivity().runOnUiThread { //из другого потока, потому вот так
+                requireActivity().runOnUiThread { //этот метод вызывается из другого потока, потому вот так
                     //разобраться в этом методе,нах он
-                    //да, я не понял, нафига кэш=эмпти здесь
-                    data.observed(representative) //по дефолту observable.clear() у SubscriptionUiState.Initial
+                    //да, И я не понял, нафига кэш=эмпти здесь
+                    // метод ниже нужен для того,чтобы сказать репрезентативу , что я реально получил стейт
+                    //тут уже пошёл лоадинг
+                    // TODO: вызывается и до лоадинга ..ещё раз дебаггером
+
+                    data.observed(representative) //это код делает SubscriptionUiState.Empty в UiObservable (cache=empty)
+                    //только  инишала и саксесса
                     data.show(subscribeButton, progressBar, finishButton)
+                    //todo data - это ?-> мб SubscriptionUiState.Loading||Initial||Success
                 }
         }
 
-        representative.init(SaveAndRestoreSubscriptionUiState.Base(savedInstanceState)) //сделали обёртку в SaveAndRestore
+        //хэндл смерти процесса
+        //здесь нуллабл
+        representative.init(SaveAndRestoreSubscriptionUiState.Base(savedInstanceState))
+        //сделали обёртку в инт-се SaveAndRestoreState
+        //чтоб можно было с бандлом работать не только тут, тк бандл - это андроид ос
         //чтоб можно было в инит принимать бандл - сделали обёртку для него
     }
 
-    //сохранение стейта всего экрана
+    //сохранение стейта всего экрана перед смертью//здесь не нуллабл
+    //КОГДА ОН ВЫЗЫВАЕТСЯ?????
+    //И ЧТО ВООБЩЕ СОХРАНЯЕТСЯ В БАНДЛ ??
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         representative.save(SaveAndRestoreSubscriptionUiState.Base(outState))

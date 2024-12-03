@@ -19,7 +19,12 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
     @MainThread
     fun subscribe()
     fun finish()
+
+    //инит - это рестор из бандла /getSerializable()
     fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore)
+    //было ещё так
+    //сэйв- это putSerializable()
+    // fun save(saveState: SaveAndRestoreSubscriptionUiState.Save)
 
 
     class Base(
@@ -31,15 +36,19 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         private val navigation: Navigation.Update
     ) : SubscriptionRepresentative {
 
+        override fun observed() = observable.clear()
+
         //init блок = конструктор
         //первичный конструктор уже есть
         init {
             Log.d("nn97", "SubscriptionRepresentative init")
         }
 
+        //restoreState: SaveAndRestoreSubscriptionUiState.Restore - это обертка над бандлом
         override fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore) {
             //топ хэндлер смерти процесса
-            if (restoreState.isEmpty()) {
+            if (restoreState.isEmpty()) { //тут возвращаем тру или фолс, потому что во фрагменте мы
+                //передали bundle,а в SaveAndRestoreState  override fun isEmpty(): Boolean = bundle == null
                 Log.d("nn97", "this is very first opening the app")
                 handleDeath.firstOpening()
                 observable.update(SubscriptionUiState.Initial)
@@ -52,10 +61,11 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
                     //по дефолту он  там дёргает  observable.update(this),но зачем это делать
                     //когда в эмпти (в сабюайстейте) он кидает юнит, но чтоб от Initial пришли к  Empty
                     //надо эмпти пингануть, то есть нужно зачистить, а зачистка происходит в методе observed()->clear()
-                    val uiState = restoreState.restore()
+                    val uiState =
+                        restoreState.restore()//рестор - это наш юай стейт,ему будем прокидывать наш репрезантив(this) и
                     Log.d("nn97", "SubscriptionRepresentative#restoreAfterDeath")
                     uiState.restoreAfterDeath(this, observable)
-                    //success case    observable.update(SubscriptionUiState.Success)
+                    //success case observable.update(SubscriptionUiState.Success)
                 }/* else {
                     //use local cache and dont use permanent
                     Log.d("nn97", "just activity recreated")
@@ -63,8 +73,8 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             }
         }
 
-        override fun observed() = observable.clear()
 
+        //мы сохраняем наш юай стейт. но он находится в обзервабле, поэтому дополняем наш обзёрвабл функцией save
         override fun save(saveState: SaveAndRestoreSubscriptionUiState.Save) {
             observable.save(saveState)
         }
@@ -73,6 +83,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             Thread.sleep(3000)
             //на клике идёт сохранение в шердпреф
             userPremiumCache.saveUserPremium()
+            Log.d("nn97", "death can happen here/  before showing success")
             observable.update(SubscriptionUiState.Success)
         }
 
@@ -121,10 +132,13 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
     }
 }
 
+//это сделано для удобства, тк сэйв дёргается в разных местах//зачеммм???затем,что
+// //мы сохраняем наш юай стейт всего экрана. но он находится в обзервабле, поэтому дополняем наш обзёрвабл функцией save
 interface SaveSubscriptionUiState {
     fun save(saveState: SaveAndRestoreSubscriptionUiState.Save)
 }
 
+//эти внизу - интерфейс сигригашн, чтоб SubscriptionUiState у репрезентатива ьыли только эти методы
 interface SubscriptionObserved {
     fun observed()
 }

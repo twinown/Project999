@@ -25,7 +25,8 @@ interface Core : ProvideNavigation, ProvideSharedPreferences {
         //observer = mainActivity$onCreate
         private val navigation = Navigation.Base()
 
-        //метод , вызываемый во всех модулях
+        //метод , вызываемый во всех модулях//изза этого метода навигашн один и тот же
+        //он создался выше
         override fun navigation(): Navigation.Mutable = navigation
 
         //вызывается метод в модулях

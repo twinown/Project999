@@ -57,6 +57,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
             //эт вызывается в uiobserable,когда уже премиум, у обсервера, коим является твой фрагмент
             //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже,если премиум, в нем вызывается
             // шоу из премиумдэшбордюайстейта
+            //если не перм идём в дашьордфр
             override fun update(data: PremiumDashboardUiState) {
                 data.show(button, textView)
             }

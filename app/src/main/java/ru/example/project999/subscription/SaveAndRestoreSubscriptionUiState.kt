@@ -15,8 +15,7 @@ interface SaveAndRestoreSubscriptionUiState {
         bundle,
         KEY,
         SubscriptionUiState::class.java
-    ),
-        Mutable
+    ), Mutable
 
     companion object {
         private const val KEY = "SubscriptionUiStateSaveAndRestoreKey"

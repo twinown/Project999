@@ -26,10 +26,11 @@ interface SaveAndRestoreState<T : Serializable> {
     interface Mutable<T : Serializable> : Save<T>, Restore<T>
 
     abstract class Abstract<T : Serializable>(
-        private val bundle: Bundle?, //единственное, что приходит от андроида-здесь обёртка над андроидовским бандлом
+        private val bundle: Bundle?, //единственное, что приходит от андроида - здесь обёртка над андроидовским бандлом
         private val key: String,
         private val clasz: Class<T>
     ) : SaveAndRestoreState.Mutable<T> {
+
         override fun isEmpty(): Boolean = bundle == null
 
         //чё делает этот метод ?
