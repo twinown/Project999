@@ -51,19 +51,20 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
                 //передали bundle,а в SaveAndRestoreState  override fun isEmpty(): Boolean = bundle == null
                 Log.d("nn97", "this is very first opening the app")
                 handleDeath.firstOpening()
+                //этот метод вызывается только для того, чтобы в кэш записать SubscriptionUiState.Initial
                 observable.update(SubscriptionUiState.Initial)
             } else {
                 if (handleDeath.didDeathHappen()) {
                     //go to permanent storage and get localCache
                     Log.d("nn97", "death happened")
                     handleDeath.deathHandled() //флаг ,как я понял
-                    //рестор после смерти
-                    //по дефолту он  там дёргает  observable.update(this),но зачем это делать
-                    //когда в эмпти (в сабюайстейте) он кидает юнит, но чтоб от Initial пришли к  Empty
-                    //надо эмпти пингануть, то есть нужно зачистить, а зачистка происходит в методе observed()->clear()
+                    //рестор вызывается после смерти
+                    //из ресторстейта мы получаем  наш юай стейт(из бандла!!!)
                     val uiState =
-                        restoreState.restore()//рестор - это наш юай стейт,ему будем прокидывать наш репрезантив(this) и
+                        restoreState.restore()
                     Log.d("nn97", "SubscriptionRepresentative#restoreAfterDeath")
+                    //по дефолту он  там дёргает  observable.update(this),но зачем это делать->
+                    //чтоб показать картинку, дебил
                     uiState.restoreAfterDeath(this, observable)
                     //success case observable.update(SubscriptionUiState.Success)
                 }/* else {
@@ -79,10 +80,10 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             observable.save(saveState)
         }
 
-        private val thread = Thread {
+        private fun thread() = Thread {
             Thread.sleep(3000)
             //на клике идёт сохранение в шердпреф
-            userPremiumCache.saveUserPremium()
+            //      userPremiumCache.saveUserPremium()
             Log.d("nn97", "death can happen here/  before showing success")
             observable.update(SubscriptionUiState.Success)
         }
@@ -97,7 +98,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
 
         override fun subscribeInner() {
             Log.d("nn97", "SubscriptionRepresentative#subscribeInner")
-            thread.start() //старт asynch
+            thread().start() //старт asynch
         }
 
         override fun finish() {

@@ -54,10 +54,11 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
 
         //держит ссылку на тот класс, в котором находится
         observer = object : DashboardObserver {
-            //эт вызывается в uiobserable,когда уже премиум, у обсервера, коим является твой фрагмент
+            //эт вызывается в uiobservable,когда уже премиум только, у обсервера, коим является твой фрагмент
+            //  observable.update(PremiumDashboardUiState.Playing)->  observer.update(data)
             //короче , выше нажимается плей, там внутри вызывается апдейт, что ниже,если премиум, в нем вызывается
             // шоу из премиумдэшбордюайстейта
-            //если не перм идём в дашьордфр
+            //если не прем то вызывается  navigation.update(SubscriptionScreen), сюда не заходя
             override fun update(data: PremiumDashboardUiState) {
                 data.show(button, textView)
             }

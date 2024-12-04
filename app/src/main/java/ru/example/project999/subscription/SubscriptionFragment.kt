@@ -31,26 +31,26 @@ class SubscriptionFragment :
             representative.finish()
         }
 
-        //TODO ПРАВИЛЬНО ТАК ??? КАК ЖЕ БУДЕТ ВЫПОЛНЯТЬСЯ МЕТОД finish()????ответ->навигашн всегда один и тот же
+        //TODO ПРАВИЛЬНО ТАК ??? КАК ЖЕ БУДЕТ ВЫПОЛНЯТЬСЯ МЕТОД finish()????ответ->навигашн всегда один и тот же #DONE
         observer = object : SubscriptionObserver {
             //будет дёргаться из subscribe() - обновление ui
+            //это метод вызывается в первый раз на OnResume()->//observable.updateObserver(), там внтури ->
+            //-> вызывается   observer.update(cache), где кэш уже SubscriptionUiState.Initial
             override fun update(data: SubscriptionUiState) =
                 requireActivity().runOnUiThread { //этот метод вызывается из другого потока, потому вот так
                     //разобраться в этом методе,нах он
-                    //да, И я не понял, нафига кэш=эмпти здесь
-                    // метод ниже нужен для того,чтобы сказать репрезентативу , что я реально получил стейт
-                    //тут уже пошёл лоадинг
-                    // TODO: вызывается и до лоадинга ..ещё раз дебаггером
-
-                    data.observed(representative) //это код делает SubscriptionUiState.Empty в UiObservable (cache=empty)
-                    //только  инишала и саксесса
+                    //да, И я не понял, нафига кэш=эмпти здесь для инишала и для саксесса
+                    // метод ниже нужен для того,чтобы сказать репрезентативу, что я реально получил стейт
+                    // это код делает SubscriptionUiState.Empty в UiObservable (cache=empty) для инишла и саксесса
+                    data.observed(representative)
                     data.show(subscribeButton, progressBar, finishButton)
-                    //todo data - это ?-> мб SubscriptionUiState.Loading||Initial||Success
+                    //todo data - это ? -> мб SubscriptionUiState.Loading||Initial||Success #DONE
                 }
         }
 
         //хэндл смерти процесса
         //здесь нуллабл
+        //при первом запуске здесь в кэш записывается Initial
         representative.init(SaveAndRestoreSubscriptionUiState.Base(savedInstanceState))
         //сделали обёртку в инт-се SaveAndRestoreState
         //чтоб можно было с бандлом работать не только тут, тк бандл - это андроид ос
@@ -59,9 +59,10 @@ class SubscriptionFragment :
 
     //сохранение стейта всего экрана перед смертью//здесь не нуллабл
     //КОГДА ОН ВЫЗЫВАЕТСЯ?????
-    //И ЧТО ВООБЩЕ СОХРАНЯЕТСЯ В БАНДЛ ??
+    //И ЧТО ВООБЩЕ СОХРАНЯЕТСЯ В БАНДЛ ??->UiState
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        Log.d("nn97", "Subscription fragment`s onSaveInstanceState called")
         representative.save(SaveAndRestoreSubscriptionUiState.Base(outState))
     }
 

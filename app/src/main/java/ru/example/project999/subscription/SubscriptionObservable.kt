@@ -15,12 +15,13 @@ interface SubscriptionObservable : UiObservable<SubscriptionUiState>, SaveSubscr
         , SubscriptionObservable {
         //мы сохраняем наш юай стейт всего экрана.но  он находится в обзервабле, поэтому дополняем наш обзёрвабл функцией save
         override fun save(saveState: SaveAndRestoreSubscriptionUiState.Save) {
-            //ЧТО ЗА КЭШ ОН СОХРАНЯЕТ??????????скрины /скрин??он сохраняет стейт, который в кэше, в бандл
-            //походу,  cache - это SubscriptionUiState$Initial || $Loading||#Success
+            //ЧТО ЗА КЭШ ОН СОХРАНЯЕТ??????????скрины /скрин??он сохраняет юайстейт, который в кэше(в uiobservable)
+            // , в бандл (сохраняет)
+            //cache - это SubscriptionUiState$Initial || $Loading||#Success
             saveState.save(cache)
         }
     }
-    // TODO: РАЗБЕРИСЬ,КАК РАБОТАЕТ SAVE
+    // TODO: РАЗБЕРИСЬ,КАК РАБОТАЕТ SAVE #DONE
     //корче, кэш берем из сингла, кидаем сюда.
 
 }

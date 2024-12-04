@@ -1,9 +1,14 @@
 package ru.example.project999.subscription
 
+import android.util.Log
 import ru.example.project999.core.HideAndShow
 import java.io.Serializable
 
 interface SubscriptionUiState : Serializable {
+
+    //короче , когда мы делаем в репрезентативе data.observed(representative) -> observable.clear()->cache=empty
+    //метод observed() чистит твой кэш, который в UiObservable() //он становится (SubscriptionUiState.Empty),кроме Лоадинга
+
 
     //по дефолту работает во всех, кроме лоадинга, то есть кэш там не чистится
     fun observed(representative: SubscriptionObserved) =
@@ -17,23 +22,10 @@ interface SubscriptionUiState : Serializable {
 
     fun show(subscribeButton: HideAndShow, progressBar: HideAndShow, finishButton: HideAndShow)
 
-    // TODO: КАК БУДЕТ ПОКАЗЫВАТЬСЯ Initial, ЕСЛИ ТАМ НЕТ НИГДЕ ПОСЛЕ РЕСТОРА observable.update(SubscriptionUiState.Initial)
-    //тем более . что мы сделали потом
+    //todo я всё равно не понял , зачем на инишале и саксессе менять на эмпти.
+
+
 //--------------------------------------------------------------------------------------------------
-
-    //ЗДЕСЬ ОПИСЫВАЕТСЯ, ЕСЛИ СМЕРТЬ ПРОИЗОШЛА НА ИНИШАЛЕ после НАЖАТИЯ КНОПКИ но до появления Loading`a
-    //todo я всё равно не понял , зачем на инишале менять на эмпти.
-    //если смерть произойдёт в моменте инишала. там же всегда будет вызываться ресторафтердет с эмпти,
-    //а эмпти не делает ничего....как мы будет снова видеть инишал?????
-
-//нажали кнопку
-    //короче , когда мы делаем в репрезентативе data.observed(representative) -> observable.clear()->cache=empty
-    //метод observed() чистит твой кэш, который в UiObservable() //он становится (SubscriptionUiState.Empty)
-    //если смерть происходит на инишале, то перед этим в кэше лежит стейт инишиал
-    //мы должны его зачистить, потому что после смерти будет restoreAfterDeath() у репрезентатива
-    //он вызывается у uistate, который получили через метод restore().но получается, что при вызове
-    //restoreAfterDeath() у инишла будет вызываться метод observable.update(this)(что выше-по умолчанию),НО у нас SubscriptionUiState.Empty
-    // поэтому вызываться будет restoreAfterDeath() тот,что у эмпти (переопределённый)(который ниже, там стоит = Unit),то есть ничего не происходит
 
 
     object Initial : SubscriptionUiState {
@@ -46,7 +38,11 @@ interface SubscriptionUiState : Serializable {
             progressBar.hide()
             finishButton.hide()
         }
+
     }
+
+    //при restoreAfterDeath() у инишла будет вызываться метод observable.update(this)(что выше-по умолчанию)
+    //то же и для observed()
 
     //--------------------------------------------------------------------------------------------------
     object Loading : SubscriptionUiState {
@@ -60,12 +56,12 @@ interface SubscriptionUiState : Serializable {
             finishButton.hide()
         }
 
-
-        //если после смерти остались в лоадинге, то пингует тред.старт еще раз при восстановлении
+        //если после смерти остались в лоадинге, то пингует тред.старт еще раз при восстановлении, иначе будет показываться только бублик(лоадинг)
         override fun restoreAfterDeath(
             representative: SubscriptionInner,
             observable: SubscriptionObservable
         ) {
+            Log.d("nn91", "LoadingUistatesubscribeInner")
             representative.subscribeInner()
         }
 
@@ -97,8 +93,7 @@ interface SubscriptionUiState : Serializable {
 
         //когда это вызовется , интересно ?
         //и когда мы сделали эмпти,
-        //у нас и эмпти = Unit, то есть мы ниче делать не будем - не делаем лишнее действие(показывание инишла,
-        // потому что он и так покажется) каким ,блять, образом ??????
+        //у нас и эмпти = Unit, то есть мы ниче делать не будем - не делаем лишнее действие ---КАКОЕ ?????
         override fun restoreAfterDeath(
             representative: SubscriptionInner,
             observable: SubscriptionObservable

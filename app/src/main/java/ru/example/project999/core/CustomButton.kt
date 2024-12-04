@@ -24,7 +24,7 @@ class CustomButton : androidx.appcompat.widget.AppCompatButton, HideAndShow {
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         val visibilityState = state as VisibilityState?
-        super.onRestoreInstanceState(state)
+        super.onRestoreInstanceState(visibilityState?.superState)
         visibilityState?.let {
             visibility = it.visible
         }
