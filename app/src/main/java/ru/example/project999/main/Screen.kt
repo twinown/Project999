@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager
 interface Screen {
     //вызывается в мэйн активити
     fun show(fragmentManager: FragmentManager, containerId: Int)
-
+    fun observed(representative: MainRepresentative) = representative.observed()
     //одновременно живёт несколько фрагментов,предыдущий уходит в стек
     //сабскрипшн
     abstract class Add(private val fragmentClass: Class<out Fragment>) : Screen {
@@ -34,8 +34,7 @@ interface Screen {
 
     //Dashboard -> replace
     //Subscription -> add
-    //comeback
-    //navigation#navigate(Screen.Pop)...вообще там update()
+    //comeback via navigation#navigate(Screen.Pop)...вообще там update()
     object Pop : Screen {
         override fun show(fragmentManager: FragmentManager, containerId: Int) {
             //при попбэкстеке фрагмент предыд. заново не создается

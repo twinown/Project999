@@ -61,8 +61,9 @@ interface SubscriptionUiState : Serializable {
             representative: SubscriptionInner,
             observable: SubscriptionObservable
         ) {
-            Log.d("nn91", "LoadingUistatesubscribeInner")
+
             representative.subscribeInner()
+            Log.d("nn91", "LoadingUistatesubscribeInner")
         }
 
         override fun observed(representative: SubscriptionObserved) = Unit
@@ -75,10 +76,13 @@ interface SubscriptionUiState : Serializable {
             progressBar: HideAndShow,
             finishButton: HideAndShow
         ) {
+            //     Log.d("nn97","шоу саксэса после смерти вызвался?или до смерти?")
             subscribeButton.hide()
             progressBar.hide()
             finishButton.show()
         }
+
+
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -88,8 +92,12 @@ interface SubscriptionUiState : Serializable {
             subscribeButton: HideAndShow,
             progressBar: HideAndShow,
             finishButton: HideAndShow
-        ) = Unit
+        ): Unit {
+            Log.d("nn97", "ниче не показываем типо..ёбаный бред")
 
+        }
+
+        override fun observed(representative: SubscriptionObserved) = Unit
 
         //когда это вызовется , интересно ?
         //и когда мы сделали эмпти,

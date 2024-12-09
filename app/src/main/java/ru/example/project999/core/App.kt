@@ -6,14 +6,7 @@ import android.util.Log
 
 //он как будто сервис-локатор
 
-class App : Application(), ProvideRepresentative, CleanRepresentative {
-
-    //хранение репрезентативов
-    //надо чистить
-    private val representativeMap = mutableMapOf<Class<out Representative<*>>, Representative<*>>()
-
-
-    private lateinit var core: Core
+class App : Application(), ProvideRepresentative, ClearRepresentative {
 
     //создание репрезентативов в фабрике
     //паттерн наблюдатель: управление обзерверами ака репрезентативами всех вьюх
@@ -23,15 +16,20 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     //private var localCache = ""
 
     override fun onCreate() {
+        Log.d("nn97", "откуда старт после смерти , отсюда, с аппл он криэйта ?")
         super.onCreate()
         //кор кор - это, вообще,интерфейс, кор.Бэйз - это класс, имплем-щий провайднавигашн и провайдШердпреф
-        core = Core.Base(this) //синглтон объект(привязан к аппликашну)
         //здесь фабрика
-        factory = ProvideRepresentative.Factory(core, this)
+        factory = ProvideRepresentative.Factory(
+            ProvideRepresentative.MakeDependency(
+                Core.Base(this),
+                this
+            )
+        )
     }
 
     override fun clear(clasz: Class<out Representative<*>>) {
-        representativeMap.remove(clasz)
+        factory.clear(clasz)
     }
 
     //* - что угодно
@@ -42,12 +40,6 @@ class App : Application(), ProvideRepresentative, CleanRepresentative {
     //связка аппликашн(этот метод)+фабрика+лист
     override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
         Log.d("nn97", "provideRepresentative() в аппликашне")
-        return if (representativeMap.containsKey(clasz)) {
-            representativeMap[clasz] as T
-        } else {
-            val representative = factory.provideRepresentative(clasz)
-            representativeMap[clasz] = representative   //тот же map.put()
-            representative
-        }
+        return factory.provideRepresentative(clasz)
     }
 }

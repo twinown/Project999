@@ -17,7 +17,7 @@ interface SubscriptionObservable : UiObservable<SubscriptionUiState>, SaveSubscr
         override fun save(saveState: SaveAndRestoreSubscriptionUiState.Save) {
             //ЧТО ЗА КЭШ ОН СОХРАНЯЕТ??????????скрины /скрин??он сохраняет юайстейт, который в кэше(в uiobservable)
             // , в бандл (сохраняет)
-            //cache - это SubscriptionUiState$Initial || $Loading||#Success
+            //cache - это SubscriptionUiState||Loading||||Empty
             saveState.save(cache)
         }
     }

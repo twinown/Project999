@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 class CustomButton : androidx.appcompat.widget.AppCompatButton, HideAndShow {
@@ -23,6 +24,7 @@ class CustomButton : androidx.appcompat.widget.AppCompatButton, HideAndShow {
 
 
     override fun onRestoreInstanceState(state: Parcelable?) {
+        Log.d("nn97", "или здесь после смерти чё-то")
         val visibilityState = state as VisibilityState?
         super.onRestoreInstanceState(visibilityState?.superState)
         visibilityState?.let {

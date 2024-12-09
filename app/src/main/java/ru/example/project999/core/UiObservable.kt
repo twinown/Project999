@@ -1,5 +1,6 @@
 package ru.example.project999.core
 
+import android.util.Log
 import androidx.annotation.MainThread
 
 
@@ -22,7 +23,9 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         private var observer: UiObserver<T> = UiObserver.Empty()
 
         override fun clear() {
+
             cache = empty
+            //   Log.d("nn97","сюда на саксессе..там и так было эмпти, ща типо кэш опять эмпти? $cache")
         }
 
         @MainThread
@@ -34,17 +37,21 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         //update (), который нужно
         override fun updateObserver(uiObserver: UiObserver<T>) = synchronized(lock) {
             observer =
-                uiObserver //ключевой момент!!!//апдейтобзервер нужен для связи обзервабла(аппл) и
+                uiObserver
+            Log.d(
+                "nn97",
+                "после смерти обзервер это $observer"
+            )//ключевой момент!!!//апдейтобзервер нужен для связи обзервабла(аппл) и
             //обзервера(активити/фрагмент)//тут и происходит это выше
             //и не только, потому что в зависимости от того, какой update()
             // у кого должен вызываться, мы и передаём нужный колбэк вьюхи
-            if (!observer.isEmpty()) {
+            Log.d("nn97", "после смерти кэш это $cache")
                 observer.update(cache)
 
                 /*observer - это SubscriptionFragment
                 cache - это SubscriptionUiState$Initial    */
 
-            }
+
 
 
             //раньше было так
@@ -66,9 +73,8 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
          * **/
         override fun update(data: T) = synchronized(lock) {
             cache = data
-            if (!observer.isEmpty()) {
-                observer.update(data)
-            }
+            observer.update(data)
+
             //раньше было так
             /*
                     //represenative.showdashboard() из активити приходит в мэйнрепрезентатив, там апдейт и приходим сюда,
@@ -102,13 +108,12 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
 //--------------------------------------------------------------------------------------------
 //пингование от обзервера уже активити (типо) через ф -цию
 //это наш колбэк активити и его отпрыски типо (фрагменты)
-interface UiObserver<T : Any> : UiUpdate<T>, IsEmpty {
+interface UiObserver<T : Any> : UiUpdate<T> {
 
     //было так, потом добавили интерфейс
     // fun isEmpty(): Boolean = false
 
     class Empty<T : Any> : UiObserver<T> {
-        override fun isEmpty(): Boolean = true
         override fun update(data: T) = Unit
     }
 }

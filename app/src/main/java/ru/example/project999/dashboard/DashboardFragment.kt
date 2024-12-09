@@ -60,6 +60,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
             // шоу из премиумдэшбордюайстейта
             //если не прем то вызывается  navigation.update(SubscriptionScreen), сюда не заходя
             override fun update(data: PremiumDashboardUiState) {
+                data.observed(representative)
                 data.show(button, textView)
             }
         }
@@ -101,7 +102,7 @@ class DashboardFragment : BaseFragment<DashboardRepresentative>(R.layout.fragmen
         representative.stopGettingUpdates()
     }
 
-    interface DashboardObserver : UiObserver<PremiumDashboardUiState> {
-        override fun isEmpty(): Boolean = false
-    }
+    interface DashboardObserver : UiObserver<PremiumDashboardUiState>
+
+
 }

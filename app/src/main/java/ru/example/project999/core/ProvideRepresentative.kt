@@ -17,10 +17,11 @@ interface ProvideRepresentative {
     //вызывается из аппликашна
     fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T
 
-    class Factory(
+    class MakeDependency(
         private val core: Core,
-        private val clear: CleanRepresentative
+        private val clear: ClearRepresentative
     ) : ProvideRepresentative {
+
         override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
             return when (clasz) { //по интерфейсу отдаёт класс из модуля
                 MainRepresentative::class.java -> MainModule(core).representative()
@@ -33,6 +34,30 @@ interface ProvideRepresentative {
 
                 else -> throw IllegalStateException("unknown class $clasz")
             } as T
+        }
+    }
+
+    class Factory(
+        private val makeDependency: ProvideRepresentative
+    ) : ProvideRepresentative, ClearRepresentative {
+
+        //хранение репрезентативов
+        //надо чистить
+        private val representativeMap =
+            mutableMapOf<Class<out Representative<*>>, Representative<*>>()
+
+        override fun <T : Representative<*>> provideRepresentative(clasz: Class<T>): T {
+            return if (representativeMap.containsKey(clasz))
+                representativeMap[clasz] as T
+            else {
+                val representative = makeDependency.provideRepresentative(clasz)
+                representativeMap[clasz] = representative
+                representative
+            }
+        }
+
+        override fun clear(clasz: Class<out Representative<*>>) {
+            representativeMap.remove(clasz)
         }
     }
 }

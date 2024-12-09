@@ -15,7 +15,9 @@ interface Navigation {
     interface Update : UiUpdate<Screen>
     interface Observe : UpdateObserver<Screen>
     interface Mutable : Update,
-        Observe //для мэйн активити. там и тот нужен. и другой, в активити чтение и запись
+        Observe {
+        fun clear()
+    } //для мэйн активити. там и тот нужен. и другой, в активити чтение и запись
     //запись - имеется ввиду типо updateObserver
 
     class Base : UiObservable.Single<Screen>(Screen.Empty), Mutable {

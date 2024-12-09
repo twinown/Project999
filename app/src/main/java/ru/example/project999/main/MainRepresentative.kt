@@ -10,9 +10,11 @@ import ru.example.project999.dashboard.DashboardScreen
 interface MainRepresentative : Representative<Screen> {
 
     fun showDashboard(firstTime: Boolean)
+    fun observed()
 
     class Base(private val navigation: Navigation.Mutable) : MainRepresentative {
 
+        override fun observed() = navigation.clear()
         override fun startGettingUpdates(callback: UiObserver<Screen>) {
             // эта функция ведёт в uiobservable
             //там дёргается метод observer.update(), тк кэш не нулл, который стреляет в MainActivity

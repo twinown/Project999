@@ -1,5 +1,6 @@
 package ru.example.project999.dashboard
 
+import android.util.Log
 import ru.example.project999.core.Representative
 import ru.example.project999.core.UiObserver
 import ru.example.project999.main.Navigation
@@ -12,12 +13,17 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
     // дёргает метод репрезентатив, в этом методе идёт проверка на есть ли в шерде флаг премимум тру
     // иф элс там ..в зависмости от булена создаётся бэйсдэшбордрепрезентативПремиум или Бэйс
 
+    fun observed() = Unit
     fun play()
 
     //not premium
     //в констр приходит интерфейс, потому что если бы приходил класс, то было бы нарушение ООП
     //здесь приходит обычный интерфейс, который позволяет тупо переходить с одного фрагмента в другой
     class Base(private val navigation: Navigation.Update) : DashboardRepresentative {
+        init {
+            Log.d("nn97", "DashboardRepresentative init")
+        }
+
 
         override fun play() {
             //что вызывает этот метод? апдейт в активити ? да//КАКИМ ОБРАЗОМ ОН ПОНИМАЕТ, ЧТО НАДО ДЕРГАТЬ В АКТИВИТИ!!!???
@@ -51,6 +57,7 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
             observable.update(PremiumDashboardUiState.Playing)
         }
 
+        override fun observed() = observable.clear()
         //когда сюда приходим ?
         //когда ты уже премиум и вызываешь в Dashboard fragment
         // representative.startGettingUpdates(callback)

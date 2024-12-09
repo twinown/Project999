@@ -20,6 +20,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
     fun subscribe()
     fun finish()
 
+
     //инит - это рестор из бандла /getSerializable()
     fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore)
     //было ещё так
@@ -36,13 +37,15 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         private val navigation: Navigation.Update
     ) : SubscriptionRepresentative {
 
-        override fun observed() = observable.clear()
-
         //init блок = конструктор
         //первичный конструктор уже есть
         init {
             Log.d("nn97", "SubscriptionRepresentative init")
         }
+
+        override fun observed() = observable.clear()
+
+
 
         //restoreState: SaveAndRestoreSubscriptionUiState.Restore - это обертка над бандлом
         override fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore) {
@@ -51,7 +54,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
                 //передали bundle,а в SaveAndRestoreState  override fun isEmpty(): Boolean = bundle == null
                 Log.d("nn97", "this is very first opening the app")
                 handleDeath.firstOpening()
-                //этот метод вызывается только для того, чтобы в кэш записать SubscriptionUiState.Initial
+                //этот метод вызывается только для того, чтобы в кэш записать SubscriptionUiState.Initial (при первом открытии)
                 observable.update(SubscriptionUiState.Initial)
             } else {
                 if (handleDeath.didDeathHappen()) {
@@ -60,14 +63,15 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
                     handleDeath.deathHandled() //флаг ,как я понял
                     //рестор вызывается после смерти
                     //из ресторстейта мы получаем  наш юай стейт(из бандла!!!)
-                    val uiState =
-                        restoreState.restore()
+                    val uiState = restoreState.restore()
                     Log.d("nn97", "SubscriptionRepresentative#restoreAfterDeath")
+                    Log.d("nn97", "got from restore $uiState")
                     //по дефолту он  там дёргает  observable.update(this),но зачем это делать->
                     //чтоб показать картинку, дебил
                     uiState.restoreAfterDeath(this, observable)
                     //success case observable.update(SubscriptionUiState.Success)
-                }/* else {
+                }
+                /* else {
                     //use local cache and dont use permanent
                     Log.d("nn97", "just activity recreated")
                 }*/
@@ -80,10 +84,10 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             observable.save(saveState)
         }
 
-        private fun thread() = Thread {
+        private fun makeThread() = Thread {
             Thread.sleep(3000)
             //на клике идёт сохранение в шердпреф
-            //      userPremiumCache.saveUserPremium()
+            //        userPremiumCache.saveUserPremium()
             Log.d("nn97", "death can happen here/  before showing success")
             observable.update(SubscriptionUiState.Success)
         }
@@ -98,7 +102,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
 
         override fun subscribeInner() {
             Log.d("nn97", "SubscriptionRepresentative#subscribeInner")
-            thread().start() //старт asynch
+            makeThread().start() //старт asynch
         }
 
         override fun finish() {

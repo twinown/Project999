@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
             override fun update(data: Screen) = runOnUiThread {
                 //data это тот кэш,который ты добавил в UiObservable (если речь о первом запуске -DashboardScreen)
                 data.show(supportFragmentManager, R.id.container)
+                data.observed()
             }
         }
 
@@ -72,6 +73,11 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
         representative.stopGettingUpdates()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("nn97", "activity onsaveinsst called")
+        super.onSaveInstanceState(outState)
+    }
+
     //вызывается выше
     // почему потом эта функция дёргается ещё пару раз ??
     //потому что в базовом фрагменте эта функция вызывается у активити
@@ -87,9 +93,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
 //в классе активити..соответсвенно, он живёт столько же,скока активити
 //потому и может ТИПО быть активити
 //держит ссылку на тот класс, в котором находится
-interface ActivityCallback : UiObserver<Screen> {
-    override fun isEmpty() = false
-}
+interface ActivityCallback : UiObserver<Screen>
 
 
 

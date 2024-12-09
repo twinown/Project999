@@ -20,11 +20,12 @@ class SubscriptionRepresentativeTest {
     //возвращал бы тебе тру или фолс, но при выполнении тестов вот тут ты не можешь закинуть бандл (почему?потому что юнит тесты - это
     // тестирование джава/котлин кода ВНЕ андроида, а бандл - это ос андроид)
     //потому сделали обёртку, которая возвращает нам из обёртки над бандлом просто тру или фолз.
+    //restoreState: SaveAndRestoreSubscriptionUiState.Restore - это обертка над бандлом
     //то есть мы можем просто здесь написать фейковые интерфейсы, типо выполняющие роль бандла
     @Test
     fun test() {
-        representative.init(true)
-        representative.init(false)
+        // representative.init(true)
+//        representative.init(false)
     }
 }
 

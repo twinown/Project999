@@ -7,7 +7,7 @@ interface PremiumDashboardUiState {
 
     //видишь, вместо кнопок приходит интерфейс
     fun show(button: HideAndShow, text: HideAndShow)
-
+    fun observed(representative: DashboardRepresentative) = representative.observed()
     object Playing : PremiumDashboardUiState {
         override fun show(button: HideAndShow, text: HideAndShow) {
             //view.gone - убирает вью и его ространство
