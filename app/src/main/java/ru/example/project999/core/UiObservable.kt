@@ -23,7 +23,6 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         private var observer: UiObserver<T> = UiObserver.Empty()
 
         override fun clear() {
-
             cache = empty
             //   Log.d("nn97","сюда на саксессе..там и так было эмпти, ща типо кэш опять эмпти? $cache")
         }
@@ -36,12 +35,9 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         // и в зависимости от того  какой у тебя обзервер , дёргается тот
         //update (), который нужно
         override fun updateObserver(uiObserver: UiObserver<T>) = synchronized(lock) {
-            observer =
-                uiObserver
-            Log.d(
-                "nn97",
-                "после смерти обзервер это $observer"
-            )//ключевой момент!!!//апдейтобзервер нужен для связи обзервабла(аппл) и
+            observer = uiObserver
+            Log.d("nn97", "после смерти обзервер это $observer")
+            //ключевой момент!!!//апдейтобзервер нужен для связи обзервабла(аппл) и
             //обзервера(активити/фрагмент)//тут и происходит это выше
             //и не только, потому что в зависимости от того, какой update()
             // у кого должен вызываться, мы и передаём нужный колбэк вьюхи

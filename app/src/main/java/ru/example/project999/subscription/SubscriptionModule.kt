@@ -1,21 +1,26 @@
 package ru.example.project999.subscription
 
-import ru.example.project999.core.CleanRepresentative
+import ru.example.project999.core.ClearRepresentative
 import ru.example.project999.core.Core
 import ru.example.project999.core.HandleDeath
 import ru.example.project999.core.Module
 import ru.example.project999.main.UserPremiumCache
+import ru.example.project999.subscription.domain.SubscriptionInteractor
+import ru.example.project999.subscription.presentation.SubscriptionObservable
+import ru.example.project999.subscription.presentation.SubscriptionRepresentative
 
 class SubscriptionModule(
     private val core: Core,
-    private val clear: CleanRepresentative
+    private val clear: ClearRepresentative
 ) : Module<SubscriptionRepresentative> {
 
     override fun representative() = SubscriptionRepresentative.Base(
         HandleDeath.Base(),
         SubscriptionObservable.Base(),
         clear,
-        UserPremiumCache.Base(core.sharedPreferences()),
+        SubscriptionInteractor.Base(
+            UserPremiumCache.Base(core.sharedPreferences()),
+        ),
         //тот же навигашн, что и в остальных - он в одном экзмпляре, хранящемся в аппликашне
         //тот же кор всегда, тот же метод navigation()
         core.navigation()

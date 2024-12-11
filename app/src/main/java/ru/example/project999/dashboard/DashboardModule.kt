@@ -1,5 +1,6 @@
 package ru.example.project999.dashboard
 
+import ru.example.project999.core.ClearRepresentative
 import ru.example.project999.core.Core
 import ru.example.project999.core.Module
 import ru.example.project999.main.UserPremiumCache
@@ -7,7 +8,8 @@ import ru.example.project999.main.UserPremiumCache
 //бэйз или премиум  решается в модуле, исходя из кэша
 //то есть создаём объект дэшбордрепрезентатива: лиюо базовый, либо премиум, смотря на кэш
 class DashboardModule(
-    private val core: Core
+    private val core: Core,
+    private val clear: ClearRepresentative
 ) : Module<DashboardRepresentative> {
 
 
@@ -20,7 +22,7 @@ class DashboardModule(
         } else {
             //тот же навигашн, что и в остальных - он в одном экзмпляре, хранящемся в аппликашне
             //тот же кор всегда, тот же метод navigation()
-            DashboardRepresentative.Base(core.navigation()) //Navigation.Base()
+            DashboardRepresentative.Base(clear, core.navigation()) //Navigation.Base()
         }
     }
 }

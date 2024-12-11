@@ -5,7 +5,7 @@ import ru.example.project999.dashboard.DashboardRepresentative
 import ru.example.project999.main.MainModule
 import ru.example.project999.main.MainRepresentative
 import ru.example.project999.subscription.SubscriptionModule
-import ru.example.project999.subscription.SubscriptionRepresentative
+import ru.example.project999.subscription.presentation.SubscriptionRepresentative
 
 //поставщик репрезентативов, как я понял//фабрика объектов
 interface ProvideRepresentative {
@@ -26,7 +26,7 @@ interface ProvideRepresentative {
             return when (clasz) { //по интерфейсу отдаёт класс из модуля
                 MainRepresentative::class.java -> MainModule(core).representative()
                 //ниже первое обращение к шэрдам (через модуль)
-                DashboardRepresentative::class.java -> DashboardModule(core).representative()
+                DashboardRepresentative::class.java -> DashboardModule(core, clear).representative()
                 SubscriptionRepresentative::class.java -> SubscriptionModule(
                     core,
                     clear

@@ -1,15 +1,13 @@
-package ru.example.project999.subscription
+package ru.example.project999.subscription.presentation
 
-import android.util.Log
 import androidx.annotation.MainThread
-import ru.example.project999.core.CleanRepresentative
+import ru.example.project999.core.ClearRepresentative
 import ru.example.project999.core.HandleDeath
 import ru.example.project999.core.Representative
 import ru.example.project999.core.UiObserver
-import ru.example.project999.dashboard.DashboardRepresentative
 import ru.example.project999.dashboard.DashboardScreen
 import ru.example.project999.main.Navigation
-import ru.example.project999.main.UserPremiumCache
+import ru.example.project999.subscription.domain.SubscriptionInteractor
 
 interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
 //interface segregation here
@@ -32,19 +30,20 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
 
         private val handleDeath: HandleDeath,
         private val observable: SubscriptionObservable,
-        private val clear: CleanRepresentative,
-        private val userPremiumCache: UserPremiumCache.Save,
+        private val clear: ClearRepresentative,
+        private val interactor: SubscriptionInteractor,
         private val navigation: Navigation.Update
-    ) : SubscriptionRepresentative {
+    ) : SubscriptionRepresentative
+    //,()->Unit
+    {
 
         //init блок = конструктор
         //первичный конструктор уже есть
         init {
-            Log.d("nn97", "SubscriptionRepresentative init")
+//            Log.d("nn97", "SubscriptionRepresentative init")
         }
 
         override fun observed() = observable.clear()
-
 
 
         //restoreState: SaveAndRestoreSubscriptionUiState.Restore - это обертка над бандлом
@@ -52,20 +51,20 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             //топ хэндлер смерти процесса
             if (restoreState.isEmpty()) { //тут возвращаем тру или фолс, потому что во фрагменте мы
                 //передали bundle,а в SaveAndRestoreState  override fun isEmpty(): Boolean = bundle == null
-                Log.d("nn97", "this is very first opening the app")
+                //       Log.d("nn97", "this is very first opening the app")
                 handleDeath.firstOpening()
                 //этот метод вызывается только для того, чтобы в кэш записать SubscriptionUiState.Initial (при первом открытии)
                 observable.update(SubscriptionUiState.Initial)
             } else {
                 if (handleDeath.didDeathHappen()) {
                     //go to permanent storage and get localCache
-                    Log.d("nn97", "death happened")
+                    //         Log.d("nn97", "death happened")
                     handleDeath.deathHandled() //флаг ,как я понял
                     //рестор вызывается после смерти
                     //из ресторстейта мы получаем  наш юай стейт(из бандла!!!)
                     val uiState = restoreState.restore()
-                    Log.d("nn97", "SubscriptionRepresentative#restoreAfterDeath")
-                    Log.d("nn97", "got from restore $uiState")
+                    //      Log.d("nn97", "SubscriptionRepresentative#restoreAfterDeath")
+                    //        Log.d("nn97", "got from restore $uiState")
                     //по дефолту он  там дёргает  observable.update(this),но зачем это делать->
                     //чтоб показать картинку, дебил
                     uiState.restoreAfterDeath(this, observable)
@@ -84,26 +83,44 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             observable.save(saveState)
         }
 
-        private fun makeThread() = Thread {
-            Thread.sleep(3000)
-            //на клике идёт сохранение в шердпреф
-            //        userPremiumCache.saveUserPremium()
-            Log.d("nn97", "death can happen here/  before showing success")
-            observable.update(SubscriptionUiState.Success)
-        }
-
 
         override fun subscribe() {
             observable.update(SubscriptionUiState.Loading)
             //здесь мб лаг..может произойти смерть процесса здесь
-            Log.d("nn97", "death can happen here//subscribe(), but before thread.start()")
+            //     Log.d("nn97", "death can happen here//subscribe(), but before thread.start()")
             subscribeInner()
         }
 
-        override fun subscribeInner() {
-            Log.d("nn97", "SubscriptionRepresentative#subscribeInner")
-            makeThread().start() //старт asynch
+
+        /*   override fun subscribeInner() {
+               Log.d("nn97", "SubscriptionRepresentative#subscribeInner")
+               interactor.subscribe(this
+               ) //положили observable.update(SubscriptionUiState.Success) как лямбду. как анонимный интерфейс, как коллбэк
+                   // то есть типо говорим: "как будет готово interactor.subscribe,пингани мне observable.update(SubscriptionUiState.Success)
+                //старт asynch
+           }*/
+
+//штуку выше можно еще вот так записать, удалив ()->Unit класса бэйз и метод invoke() ниже
+        /*  override fun subscribeInner() {
+              Log.d("nn97", "SubscriptionRepresentative#subscribeInner")
+             interactor.subscribe{ //положили observable.update(SubscriptionUiState.Success) как лямбду. как анонимный интерфейс, как коллбэк
+                 // то есть типо говорим: "как будет готово interactor.subscribe,пингани мне observable.update(SubscriptionUiState.Success)
+                 observable.update(SubscriptionUiState.Success)
+             } //старт asynch
+          }*/
+
+
+        //короче, вся проблема вот тут : без корутин у тебя со 120 линии кода будет приходить на 117
+        //это не оч курто, для этого используются коллбэки
+
+        //штуку выше можно вот так записать
+        //callback.invoke() сюда приходит
+        private val callback: () -> Unit = {
+            observable.update(SubscriptionUiState.Success)
         }
+
+        override fun subscribeInner() = interactor.subscribe(callback)
+
 
         override fun finish() {
             //переход на дэшборд. дёргается в мэйнактивити, видишь. тут навигашн
@@ -116,7 +133,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             //переписать можно только в MainRepresentative(потому что он Mutable )
             //переходы между фрагментами делает активити колбэк !!!
             //ниже startGettingUpdates ты обновляешь  observable..в navigation.update() как был тем самым из мэйн активити, так и остался
-            clear.clear(DashboardRepresentative::class.java)
+
             clear.clear(SubscriptionRepresentative::class.java)
             //почему observer тут - это  MainActivity
 //да потому что navigation - он везде один и тот же, при создании объекта репрезентативов вызывается core.navigation(),
@@ -131,12 +148,19 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         }
 
         override fun stopGettingUpdates() {
-            observable.updateObserver()
+            observable.updateObserver(EmptySubscriptionObserver)
 
         }
+
+        /*  override fun invoke() {
+              observable.update(SubscriptionUiState.Success)
+          }*/
     }
 }
 
+object EmptySubscriptionObserver : SubscriptionFragment.SubscriptionObserver {
+    override fun update(data: SubscriptionUiState) = Unit
+}
 //это сделано для удобства, тк сэйв дёргается в разных местах//зачеммм???затем,что
 // //мы сохраняем наш юай стейт всего экрана. но он находится в обзервабле, поэтому дополняем наш обзёрвабл функцией save
 interface SaveSubscriptionUiState {

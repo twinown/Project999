@@ -1,6 +1,5 @@
-package ru.example.project999.subscription
+package ru.example.project999.subscription.presentation
 
-import android.util.Log
 import ru.example.project999.core.HideAndShow
 import java.io.Serializable
 
@@ -14,8 +13,8 @@ interface SubscriptionUiState : Serializable {
     fun observed(representative: SubscriptionObserved) =
         representative.observed()//observable.clear()->cache=empty
 
-    //это имеет смысл только если перед смертью у нас что-то было сохранено и восстановлено
-    //, и мы просто не получили это в активити
+
+    //будет работать только у инишала и саксесса , если без observed()
     fun restoreAfterDeath(
         representative: SubscriptionInner, observable: SubscriptionObservable
     ) = observable.update(this) //после равно - это типо по дефолту
@@ -63,7 +62,7 @@ interface SubscriptionUiState : Serializable {
         ) {
 
             representative.subscribeInner()
-            Log.d("nn91", "LoadingUistatesubscribeInner")
+            //   Log.d("nn91", "LoadingUistatesubscribeInner")
         }
 
         override fun observed(representative: SubscriptionObserved) = Unit
@@ -93,7 +92,7 @@ interface SubscriptionUiState : Serializable {
             progressBar: HideAndShow,
             finishButton: HideAndShow
         ): Unit {
-            Log.d("nn97", "ниче не показываем типо..ёбаный бред")
+            //   Log.d("nn97", "ниче не показываем типо..ёбаный бред")
 
         }
 
@@ -102,6 +101,7 @@ interface SubscriptionUiState : Serializable {
         //когда это вызовется , интересно ?
         //и когда мы сделали эмпти,
         //у нас и эмпти = Unit, то есть мы ниче делать не будем - не делаем лишнее действие ---КАКОЕ ?????
+        //отоброжание вьюх, андроид система сама их отображает после смерти
         override fun restoreAfterDeath(
             representative: SubscriptionInner,
             observable: SubscriptionObservable

@@ -1,4 +1,4 @@
-package ru.example.project999.subscription
+package ru.example.project999.subscription.presentation
 
 import android.os.Bundle
 import android.util.Log

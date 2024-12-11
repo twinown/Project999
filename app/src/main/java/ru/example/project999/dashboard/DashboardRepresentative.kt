@@ -1,10 +1,11 @@
 package ru.example.project999.dashboard
 
 import android.util.Log
+import ru.example.project999.core.ClearRepresentative
 import ru.example.project999.core.Representative
 import ru.example.project999.core.UiObserver
 import ru.example.project999.main.Navigation
-import ru.example.project999.subscription.SubscriptionScreen
+import ru.example.project999.subscription.presentation.SubscriptionScreen
 
 interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
 
@@ -19,7 +20,10 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
     //not premium
     //в констр приходит интерфейс, потому что если бы приходил класс, то было бы нарушение ООП
     //здесь приходит обычный интерфейс, который позволяет тупо переходить с одного фрагмента в другой
-    class Base(private val navigation: Navigation.Update) : DashboardRepresentative {
+    class Base(
+        private val clear: ClearRepresentative,
+        private val navigation: Navigation.Update
+    ) : DashboardRepresentative {
         init {
             Log.d("nn97", "DashboardRepresentative init")
         }
@@ -30,7 +34,7 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
             //он вызывает метод update() в uiobservable _блок else,там у обзервера снова вызывается метод update()
             //который дёргается в MainActivity
 
-
+            clear.clear(DashboardRepresentative::class.java)
             //ты пойми самое главное- ты не у именно интерфейса вызываешь метод (у инт-са нет экземпляров),а у класса, кто имплементирует этот инт-с
             //например, тут ниже ты вызываешь метод у Navigation.Base()
             //всё завязано на абстракциях

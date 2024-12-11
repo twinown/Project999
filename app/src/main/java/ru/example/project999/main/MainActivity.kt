@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), ProvideRepresentative {
             override fun update(data: Screen) = runOnUiThread {
                 //data это тот кэш,который ты добавил в UiObservable (если речь о первом запуске -DashboardScreen)
                 data.show(supportFragmentManager, R.id.container)
-                data.observed()
+                data.observed(representative)
             }
         }
 
