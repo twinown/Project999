@@ -24,7 +24,7 @@ interface MainRepresentative : Representative<Screen> {
 
         override fun stopGettingUpdates() {
             //по дефолту там эмпти в конструкторе
-            navigation.updateObserver()
+            navigation.updateObserver(EmptyMainObserver)
         }
 
         override fun showDashboard(firstTime: Boolean) {
@@ -40,3 +40,6 @@ interface MainRepresentative : Representative<Screen> {
     }
 }
 
+object EmptyMainObserver : ActivityCallback {
+    override fun update(data: Screen) = Unit
+}

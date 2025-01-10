@@ -8,10 +8,17 @@ import ru.example.project999.core.ProvideRepresentative
 import ru.example.project999.core.Representative
 import ru.example.project999.core.UiObserver
 
-class MainActivity : AppCompatActivity(), ProvideRepresentative {
+class MainActivity //(private val st:String)
+//так тоже нельзя делать. потому что парсер твой читает файл манифест,оттуда берет имя и создаёт через
+//рефлексию класс с таким именем, а ты ещё туда в конструктор кидаешь аргумент какой-то(он не знает , чё туда кидать
+//. он xml)
+    : AppCompatActivity(), ProvideRepresentative {
 
     //смотри, тут та х -ня с аттачом, он еще не настал ,потому будет ошибка
+    //потому что поля инициализируются в момент инициализации объекта, а объект MainActivity инииализируется лишь в
+    //моменте рефлексивного создания при чтении манифеста,а апплкашн не готов ещё, а ты к нему ссылаешься
     // private val appName = application.getString(R.string.app_name)
+    //контекст доступен только на окриате
 
     private lateinit var representative: MainRepresentative
     private lateinit var activityCallback: ActivityCallback

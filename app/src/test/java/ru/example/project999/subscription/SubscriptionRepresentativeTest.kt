@@ -61,7 +61,8 @@ class SubscriptionRepresentativeTest {
         handleDeath.checkFirstOpeningCalled(1)
         observable.checkUiState(SubscriptionUiState.Initial)
 
-        val callback = object : SubscriptionFragment.SubscriptionObserver { //fake of Activity
+        val callback =
+            object : SubscriptionFragment.SubscriptionObserver { //fake of //Subscr// Activity
             override fun update(data: SubscriptionUiState) = Unit
         }
         representative.startGettingUpdates(callback)

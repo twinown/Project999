@@ -1,6 +1,5 @@
 package ru.example.project999.dashboard
 
-import android.util.Log
 import ru.example.project999.core.ClearRepresentative
 import ru.example.project999.core.Representative
 import ru.example.project999.core.UiObserver
@@ -25,7 +24,7 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
         private val navigation: Navigation.Update
     ) : DashboardRepresentative {
         init {
-            Log.d("nn97", "DashboardRepresentative init")
+            //      Log.d("nn97", "DashboardRepresentative init")
         }
 
 
@@ -72,7 +71,11 @@ interface DashboardRepresentative : Representative<PremiumDashboardUiState> {
         }
 
         override fun stopGettingUpdates() {
-            observable.updateObserver()
+            observable.updateObserver(EmptyDashboardObserver)
         }
     }
+}
+
+object EmptyDashboardObserver : DashboardFragment.DashboardObserver {
+    override fun update(data: PremiumDashboardUiState) = Unit
 }
