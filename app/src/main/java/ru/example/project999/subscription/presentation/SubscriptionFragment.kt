@@ -40,8 +40,10 @@ class SubscriptionFragment :
             //будет дёргаться из subscribe() - обновление ui
             //это метод вызывается в первый раз на OnResume()->//observable.updateObserver(), там внтури ->
             //-> вызывается   observer.update(cache), где кэш уже SubscriptionUiState.Initial
-            override fun update(data: SubscriptionUiState) =
-                requireActivity().runOnUiThread {
+            override fun update(data: SubscriptionUiState)
+            //было так до корутин
+            //   = requireActivity().runOnUiThread
+            {
                     Log.d("nn97", "(на он резюме) сабскрип фрагма (-после смерти) $data")
                     //этот метод вызывается из другого потока, потому вот так
                     //разобраться в этом методе,нах он

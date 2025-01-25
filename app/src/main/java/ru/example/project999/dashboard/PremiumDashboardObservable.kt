@@ -10,6 +10,6 @@ import ru.example.project999.core.UiObservable
 // TODO: в будущем пойми , почему так - не оч понятно
 //видимо, чтоб не переопределять методы UiObservable`а
 interface PremiumDashboardObservable : UiObservable<PremiumDashboardUiState> {
-    class Base : UiObservable.Single<PremiumDashboardUiState>(PremiumDashboardUiState.Empty),
+    class Base : UiObservable.Base<PremiumDashboardUiState>(PremiumDashboardUiState.Empty),
         PremiumDashboardObservable
 }

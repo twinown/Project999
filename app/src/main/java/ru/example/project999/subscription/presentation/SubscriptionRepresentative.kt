@@ -1,9 +1,12 @@
 package ru.example.project999.subscription.presentation
 
 import androidx.annotation.MainThread
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.example.project999.core.ClearRepresentative
 import ru.example.project999.core.HandleDeath
 import ru.example.project999.core.Representative
+import ru.example.project999.core.RunAsync
 import ru.example.project999.core.UiObserver
 import ru.example.project999.dashboard.DashboardScreen
 import ru.example.project999.main.Navigation
@@ -27,13 +30,13 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
 
 
     class Base(
-
+        private val runAsync: RunAsync,
         private val handleDeath: HandleDeath,
         private val observable: SubscriptionObservable,
         private val clear: ClearRepresentative,
         private val interactor: SubscriptionInteractor,
         private val navigation: Navigation.Update
-    ) : SubscriptionRepresentative
+    ) : Representative.Abstract<SubscriptionUiState>(runAsync), SubscriptionRepresentative
     //,()->Unit
     {
 
@@ -113,13 +116,23 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         //короче, вся проблема вот тут : без корутин у тебя со 120 линии кода будет приходить на 117
         //это не оч курто, для этого используются коллбэки
 
+        //было так,стало как ниже
         //штуку выше можно вот так записать
         //callback.invoke() сюда приходит
-        private val callback: () -> Unit = {
+        /*private val callback: () -> Unit = {
             observable.update(SubscriptionUiState.Success)
         }
+*/
+        override fun subscribeInner() {
+            coroutineScope.launch(dispatchersList.background())
+            {
+                interactor.subscribe()
+                withContext(dispatchersList.ui()) {
+                    observable.update(SubscriptionUiState.Success)
+                }
+            }
+        }
 
-        override fun subscribeInner() = interactor.subscribe(callback)
 
 
         override fun finish() {

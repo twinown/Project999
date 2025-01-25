@@ -1,7 +1,6 @@
 package ru.example.project999.core
 
 import android.util.Log
-import androidx.annotation.MainThread
 
 
 interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
@@ -11,14 +10,14 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
     //для того, чтоб кэш не держать долго, а выше было (ты удалил). чтоб кэш пинговался
     //отдача данных один раз в ту же активити,короче говоря
     //сингл используется вместе в фризес текст, кэш обнуляется при смерти, а всё живёт за счёт бандла
-    abstract class Single<T : Any>(private val empty: T) : UiObservable<T> {
+    abstract class Base<T : Any>(private val empty: T) : UiObservable<T> {
 
-        @Volatile
+
         //был private
         internal var cache: T = empty
 
-        @Volatile //чтоб не кэшировалась разными тредами переменная(каждый у себя типо) -
-        //в единственном экземпляре
+        //  @Volatile //чтоб не кэшировалась разными тредами переменная(каждый у себя типо) в единственном экземпляре - уже нет
+
         //эмпти - чтоб не пользоваться нуллами
         private var observer: UiObserver<T> = UiObserver.Empty()
 
@@ -27,14 +26,15 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
             //   Log.d("nn97","сюда на саксессе..там и так было эмпти, ща типо кэш опять эмпти? $cache")
         }
 
-        @MainThread
         //вызывается  обзерваблом ака мэйнрепрезентативом
         //на ONRESUME каждый раз
         //походу, я понял. этот метод нужен для того, чтобы обновить обзервер вот здесь!!!!!
         //типо ты его обновляешь(типо он тут другой становится, тип)
         // и в зависимости от того  какой у тебя обзервер , дёргается тот
         //update (), который нужно
-        override fun updateObserver(uiObserver: UiObserver<T>) = synchronized(lock) {
+        override fun updateObserver(uiObserver: UiObserver<T>)
+        //  = synchronized(lock) было до корутин
+        {
             observer = uiObserver
             Log.d("nn97", "после смерти обзервер это $observer")
             //ключевой момент!!!//апдейтобзервер нужен для связи обзервабла(аппл) и
@@ -67,7 +67,9 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
         /**
          * called by  model, в том числе (типо тред у нас, то есть другой)
          * **/
-        override fun update(data: T) = synchronized(lock) {
+        override fun update(data: T)
+        //  = synchronized(lock) было до корутин
+        {
             cache = data
             observer.update(data)
 

@@ -20,7 +20,7 @@ interface Navigation {
     } //для мэйн активити. там и тот нужен. и другой, в активити чтение и запись
     //запись - имеется ввиду типо updateObserver
 
-    class Base : UiObservable.Single<Screen>(Screen.Empty), Mutable {
+    class Base : UiObservable.Base<Screen>(Screen.Empty), Mutable {
     } //наследник сингла - класс,а также мутабла
     //чтоб создать класс Navigation.Base()
 
