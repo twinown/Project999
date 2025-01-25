@@ -5,6 +5,7 @@ import ru.example.project999.core.Core
 import ru.example.project999.core.DispatchersList
 import ru.example.project999.core.HandleDeath
 import ru.example.project999.core.Module
+import ru.example.project999.core.RunAsync
 import ru.example.project999.main.UserPremiumCache
 import ru.example.project999.subscription.data.BaseSubscriptionRepository
 import ru.example.project999.subscription.data.SubscriptionCloudDataSource
@@ -18,7 +19,7 @@ class SubscriptionModule(
 ) : Module<SubscriptionRepresentative> {
 
     override fun representative() = SubscriptionRepresentative.Base(
-        DispatchersList.Base(),
+       core.runAsync() ,
         HandleDeath.Base(),
         SubscriptionObservable.Base(),
         clear,

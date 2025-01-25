@@ -2,6 +2,7 @@ package ru.example.project999.core
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,6 +26,9 @@ interface Representative<T : Any> {
         ) {
             runAsync.runAsync(coroutineScope, backgroundBlock, uiBlock)
         }
+        protected  fun clear(){
+            runAsync.clear()
+        }
     }
 }
 
@@ -36,15 +40,17 @@ interface RunAsync {
         uiBlock: (T) -> Unit
     )
 
+    fun clear()
     class Base(
         private val dispatchersList: DispatchersList
     ) : RunAsync {
+        private var job:Job?= null
         override fun <T : Any> runAsync(
             scope: CoroutineScope,
             backgroundBlock: suspend () -> T,
             uiBlock: (T) -> Unit
         ) {
-            scope.launch(dispatchersList.background()) {
+           job = scope.launch(dispatchersList.background()) {
                 val result = backgroundBlock.invoke()
                 withContext(dispatchersList.ui()) {
                     uiBlock.invoke(result)
@@ -52,6 +58,11 @@ interface RunAsync {
 
             }
 
+        }
+
+        override fun clear() {
+            job?.cancel()
+            job = null
         }
     }
 }

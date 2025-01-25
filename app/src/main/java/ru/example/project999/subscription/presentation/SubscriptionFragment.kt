@@ -3,6 +3,7 @@ package ru.example.project999.subscription.presentation
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import ru.example.project999.R
 import ru.example.project999.core.CustomButton
 import ru.example.project999.core.CustomProgressBar
@@ -28,6 +29,13 @@ class SubscriptionFragment :
         val subscribeButton = view.findViewById<CustomButton>(R.id.subscribe_button)
         val progressBar = view.findViewById<CustomProgressBar>(R.id.progressBar)
         val finishButton = view.findViewById<CustomButton>(R.id.finish_button)
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner,object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                representative.comeBack()
+            }
+
+        })
         subscribeButton.setOnClickListener {
             representative.subscribe()
         }

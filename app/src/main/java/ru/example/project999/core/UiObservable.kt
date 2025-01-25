@@ -1,6 +1,7 @@
 package ru.example.project999.core
 
 import android.util.Log
+import androidx.annotation.MainThread
 
 
 interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
@@ -10,6 +11,7 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
     //для того, чтоб кэш не держать долго, а выше было (ты удалил). чтоб кэш пинговался
     //отдача данных один раз в ту же активити,короче говоря
     //сингл используется вместе в фризес текст, кэш обнуляется при смерти, а всё живёт за счёт бандла
+    @MainThread
     abstract class Base<T : Any>(private val empty: T) : UiObservable<T> {
 
 
@@ -96,10 +98,10 @@ interface UiObservable<T : Any> : UiUpdate<T>, UpdateObserver<T> {
 
         }
 
-        //для синхронайзда
+       /* //для синхронайзда было до корутин
         companion object {
             private val lock = Object()
-        }
+        }*/
     }
 }
 

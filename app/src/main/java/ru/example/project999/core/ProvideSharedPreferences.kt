@@ -15,11 +15,16 @@ interface ProvideNavigation {
     fun navigation(): Navigation.Mutable
 }
 
+interface ProvideRunAsync{
+    fun runAsync():RunAsync
+}
+
 //кор - ядро, то есть некоторые общие вещи
-interface Core : ProvideNavigation, ProvideSharedPreferences {
+interface Core : ProvideNavigation, ProvideSharedPreferences,ProvideRunAsync {
 
     class Base(private val context: Context) : Core {
 
+        private val runAsync = RunAsync.Base(DispatchersList.Base())
         //этот нав_бэйз будет всегда один и тот же везде при создании репрезентативов, поэтому когда ты вызываешь
         //у него updateObserver()(только в майнактивити) или update(), то всегда будет дёргаться
         //observer = mainActivity$onCreate
@@ -35,5 +40,7 @@ interface Core : ProvideNavigation, ProvideSharedPreferences {
             //создание через контекст
             return context.getSharedPreferences("project999", Context.MODE_PRIVATE)
         }
+
+        override fun runAsync(): RunAsync = runAsync
     }
 }

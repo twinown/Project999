@@ -10,6 +10,7 @@ import ru.example.project999.core.RunAsync
 import ru.example.project999.core.UiObserver
 import ru.example.project999.dashboard.DashboardScreen
 import ru.example.project999.main.Navigation
+import ru.example.project999.main.Screen
 import ru.example.project999.subscription.domain.SubscriptionInteractor
 
 interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
@@ -24,6 +25,7 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
 
     //инит - это рестор из бандла /getSerializable()
     fun init(restoreState: SaveAndRestoreSubscriptionUiState.Restore)
+    fun comeBack()
     //было ещё так
     //сэйв- это putSerializable()
     // fun save(saveState: SaveAndRestoreSubscriptionUiState.Save)
@@ -86,8 +88,10 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
             observable.save(saveState)
         }
 
+        private var canGoBack = true
 
         override fun subscribe() {
+            canGoBack = false
             observable.update(SubscriptionUiState.Loading)
             //здесь мб лаг..может произойти смерть процесса здесь
             //     Log.d("nn97", "death can happen here//subscribe(), but before thread.start()")
@@ -124,18 +128,17 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         }
 */
         override fun subscribeInner() {
-            coroutineScope.launch(dispatchersList.background())
-            {
+            handleAsync({
                 interactor.subscribe()
-                withContext(dispatchersList.ui()) {
-                    observable.update(SubscriptionUiState.Success)
-                }
+
+            }) {
+                observable.update(SubscriptionUiState.Success)
+                canGoBack = true
             }
         }
 
-
-
         override fun finish() {
+            clear()
             //переход на дэшборд. дёргается в мэйнактивити, видишь. тут навигашн
             // TODO: КАКИМ ОБРАЗОМ ЭТО ПЕРЕЙДЁТ ЕСЛИ В UIOBSERABLE observer -
             //  это твой  object : UiObserver<SubscriptionUiState>
@@ -168,12 +171,18 @@ interface SubscriptionRepresentative : Representative<SubscriptionUiState>,
         /*  override fun invoke() {
               observable.update(SubscriptionUiState.Success)
           }*/
+        override fun comeBack() {
+            if (canGoBack) {
+                finish()
+            }
+        }
     }
 }
 
 object EmptySubscriptionObserver : SubscriptionFragment.SubscriptionObserver {
     override fun update(data: SubscriptionUiState) = Unit
 }
+
 //это сделано для удобства, тк сэйв дёргается в разных местах//зачеммм???затем,что
 // //мы сохраняем наш юай стейт всего экрана. но он находится в обзервабле, поэтому дополняем наш обзёрвабл функцией save
 interface SaveSubscriptionUiState {
